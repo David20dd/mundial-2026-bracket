@@ -1,0 +1,46 @@
+name: Update World Cup Bracket
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-worldcup-bracket
+  cancel-in-progress: true
+
+jobs:
+  update-bracket:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Update tournament data from API
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_LEAGUE_ID: ${{ secrets.API_FOOTBALL_LEAGUE_ID }}
+          API_FOOTBALL_SEASON: ${{ secrets.API_FOOTBALL_SEASON }}
+        run: node scripts/update-worldcup-data.mjs
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          if git diff --quiet data/tournament.json; then
+            echo "No hay cambios en data/tournament.json"
+          else
+            git add data/tournament.json
+            git commit -m "Update World Cup bracket data"
+            git push
+          fi
