@@ -490,18 +490,25 @@ function teamRowTemplate(team, score, penaltyScore, isWinner) {
 }
 
 function flagTemplate(team) {
-    const flagCode = flagCodeMap[team.code];
+  const flagCode = flagCodeMap[team.code];
 
-    if (!flagCode) {
-        return `<span class="flag-emoji">${team.flag || "⚽"}</span>`;
-    }
+  if (!flagCode) {
+    return `<span class="flag-emoji">${team.flag || "⚽"}</span>`;
+  }
 
-    return `
+  return `
     <img
       class="flag-img"
-      src="https://flagcdn.com/24x18/${flagCode}.png"
+      src="https://flagcdn.com/w80/${flagCode}.png"
+      srcset="
+        https://flagcdn.com/w40/${flagCode}.png 1x,
+        https://flagcdn.com/w80/${flagCode}.png 2x,
+        https://flagcdn.com/w160/${flagCode}.png 3x
+      "
       alt="${team.name}"
       loading="lazy"
+      decoding="async"
+      onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<span class=&quot;flag-emoji&quot;>${team.flag || "⚽"}</span>');"
     />
   `;
 }
