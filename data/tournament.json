@@ -1,1103 +1,1108 @@
 {
-    "meta": {
-        "name": "Mundial 2026",
-        "updatedAt": null,
-        "note": "Datos iniciales de ejemplo. Reemplazar con información oficial o alimentar desde API."
+  "meta": {
+    "name": "Mundial 2026",
+    "updatedAt": "2026-07-08T22:21:05.771Z",
+    "note": "Datos iniciales de ejemplo. Reemplazar con información oficial o alimentar desde API.",
+    "source": "API-Football",
+    "leagueId": "1",
+    "season": "2026",
+    "matchedFixtures": 0,
+    "totalApiFixtures": 0
+  },
+  "groups": [
+    {
+      "id": "A",
+      "color": "#1ee66b",
+      "teams": [
+        {
+          "name": "México",
+          "code": "MEX",
+          "flag": "🇲🇽"
+        },
+        {
+          "name": "Sudáfrica",
+          "code": "RSA",
+          "flag": "🇿🇦"
+        },
+        {
+          "name": "Corea del Sur",
+          "code": "KOR",
+          "flag": "🇰🇷"
+        },
+        {
+          "name": "Chequia",
+          "code": "CZE",
+          "flag": "🇨🇿"
+        }
+      ]
     },
-    "groups": [
+    {
+      "id": "B",
+      "color": "#ff4164",
+      "teams": [
         {
-            "id": "A",
-            "color": "#1ee66b",
-            "teams": [
-                {
-                    "name": "México",
-                    "code": "MEX",
-                    "flag": "🇲🇽"
-                },
-                {
-                    "name": "Sudáfrica",
-                    "code": "RSA",
-                    "flag": "🇿🇦"
-                },
-                {
-                    "name": "Corea del Sur",
-                    "code": "KOR",
-                    "flag": "🇰🇷"
-                },
-                {
-                    "name": "Chequia",
-                    "code": "CZE",
-                    "flag": "🇨🇿"
-                }
-            ]
+          "name": "Suiza",
+          "code": "SUI",
+          "flag": "🇨🇭"
         },
         {
-            "id": "B",
-            "color": "#ff4164",
-            "teams": [
-                {
-                    "name": "Suiza",
-                    "code": "SUI",
-                    "flag": "🇨🇭"
-                },
-                {
-                    "name": "Canadá",
-                    "code": "CAN",
-                    "flag": "🇨🇦"
-                },
-                {
-                    "name": "Bosnia y Herzegovina",
-                    "code": "BIH",
-                    "flag": "🇧🇦"
-                },
-                {
-                    "name": "Catar",
-                    "code": "QAT",
-                    "flag": "🇶🇦"
-                }
-            ]
+          "name": "Canadá",
+          "code": "CAN",
+          "flag": "🇨🇦"
         },
         {
-            "id": "C",
-            "color": "#ff9c27",
-            "teams": [
-                {
-                    "name": "Brasil",
-                    "code": "BRA",
-                    "flag": "🇧🇷"
-                },
-                {
-                    "name": "Marruecos",
-                    "code": "MAR",
-                    "flag": "🇲🇦"
-                },
-                {
-                    "name": "Escocia",
-                    "code": "SCO",
-                    "flag": "🏴"
-                },
-                {
-                    "name": "Haití",
-                    "code": "HAI",
-                    "flag": "🇭🇹"
-                }
-            ]
+          "name": "Bosnia y Herzegovina",
+          "code": "BIH",
+          "flag": "🇧🇦"
         },
         {
-            "id": "D",
-            "color": "#5764ff",
-            "teams": [
-                {
-                    "name": "Estados Unidos",
-                    "code": "USA",
-                    "flag": "🇺🇸"
-                },
-                {
-                    "name": "Australia",
-                    "code": "AUS",
-                    "flag": "🇦🇺"
-                },
-                {
-                    "name": "Paraguay",
-                    "code": "PAR",
-                    "flag": "🇵🇾"
-                },
-                {
-                    "name": "Turquía",
-                    "code": "TUR",
-                    "flag": "🇹🇷"
-                }
-            ]
-        },
-        {
-            "id": "E",
-            "color": "#8d35ff",
-            "teams": [
-                {
-                    "name": "Alemania",
-                    "code": "GER",
-                    "flag": "🇩🇪"
-                },
-                {
-                    "name": "Costa de Marfil",
-                    "code": "CIV",
-                    "flag": "🇨🇮"
-                },
-                {
-                    "name": "Ecuador",
-                    "code": "ECU",
-                    "flag": "🇪🇨"
-                },
-                {
-                    "name": "Curazao",
-                    "code": "CUW",
-                    "flag": "🇨🇼"
-                }
-            ]
-        },
-        {
-            "id": "F",
-            "color": "#b5e627",
-            "teams": [
-                {
-                    "name": "Países Bajos",
-                    "code": "NED",
-                    "flag": "🇳🇱"
-                },
-                {
-                    "name": "Japón",
-                    "code": "JPN",
-                    "flag": "🇯🇵"
-                },
-                {
-                    "name": "Suecia",
-                    "code": "SWE",
-                    "flag": "🇸🇪"
-                },
-                {
-                    "name": "Túnez",
-                    "code": "TUN",
-                    "flag": "🇹🇳"
-                }
-            ]
-        },
-        {
-            "id": "G",
-            "color": "#ff4e9a",
-            "teams": [
-                {
-                    "name": "Bélgica",
-                    "code": "BEL",
-                    "flag": "🇧🇪"
-                },
-                {
-                    "name": "Egipto",
-                    "code": "EGY",
-                    "flag": "🇪🇬"
-                },
-                {
-                    "name": "Irán",
-                    "code": "IRN",
-                    "flag": "🇮🇷"
-                },
-                {
-                    "name": "Nueva Zelanda",
-                    "code": "NZL",
-                    "flag": "🇳🇿"
-                }
-            ]
-        },
-        {
-            "id": "H",
-            "color": "#2fd6c5",
-            "teams": [
-                {
-                    "name": "España",
-                    "code": "ESP",
-                    "flag": "🇪🇸"
-                },
-                {
-                    "name": "Cabo Verde",
-                    "code": "CPV",
-                    "flag": "🇨🇻"
-                },
-                {
-                    "name": "Uruguay",
-                    "code": "URU",
-                    "flag": "🇺🇾"
-                },
-                {
-                    "name": "Arabia Saudita",
-                    "code": "KSA",
-                    "flag": "🇸🇦"
-                }
-            ]
-        },
-        {
-            "id": "I",
-            "color": "#ba55ff",
-            "teams": [
-                {
-                    "name": "Francia",
-                    "code": "FRA",
-                    "flag": "🇫🇷"
-                },
-                {
-                    "name": "Noruega",
-                    "code": "NOR",
-                    "flag": "🇳🇴"
-                },
-                {
-                    "name": "Senegal",
-                    "code": "SEN",
-                    "flag": "🇸🇳"
-                },
-                {
-                    "name": "Irak",
-                    "code": "IRQ",
-                    "flag": "🇮🇶"
-                }
-            ]
-        },
-        {
-            "id": "J",
-            "color": "#5bc6e8",
-            "teams": [
-                {
-                    "name": "Argentina",
-                    "code": "ARG",
-                    "flag": "🇦🇷"
-                },
-                {
-                    "name": "Austria",
-                    "code": "AUT",
-                    "flag": "🇦🇹"
-                },
-                {
-                    "name": "Argelia",
-                    "code": "ALG",
-                    "flag": "🇩🇿"
-                },
-                {
-                    "name": "Jordania",
-                    "code": "JOR",
-                    "flag": "🇯🇴"
-                }
-            ]
-        },
-        {
-            "id": "K",
-            "color": "#ff6a3d",
-            "teams": [
-                {
-                    "name": "Colombia",
-                    "code": "COL",
-                    "flag": "🇨🇴"
-                },
-                {
-                    "name": "Portugal",
-                    "code": "POR",
-                    "flag": "🇵🇹"
-                },
-                {
-                    "name": "RD Congo",
-                    "code": "COD",
-                    "flag": "🇨🇩"
-                },
-                {
-                    "name": "Uzbekistán",
-                    "code": "UZB",
-                    "flag": "🇺🇿"
-                }
-            ]
-        },
-        {
-            "id": "L",
-            "color": "#45b6e8",
-            "teams": [
-                {
-                    "name": "Inglaterra",
-                    "code": "ENG",
-                    "flag": "🏴"
-                },
-                {
-                    "name": "Croacia",
-                    "code": "CRO",
-                    "flag": "🇭🇷"
-                },
-                {
-                    "name": "Ghana",
-                    "code": "GHA",
-                    "flag": "🇬🇭"
-                },
-                {
-                    "name": "Panamá",
-                    "code": "PAN",
-                    "flag": "🇵🇦"
-                }
-            ]
+          "name": "Catar",
+          "code": "QAT",
+          "flag": "🇶🇦"
         }
-    ],
-    "matches": [
+      ]
+    },
+    {
+      "id": "C",
+      "color": "#ff9c27",
+      "teams": [
         {
-            "id": "M74",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Alemania",
-                "code": "GER",
-                "flag": "🇩🇪"
-            },
-            "away": {
-                "name": "Paraguay",
-                "code": "PAR",
-                "flag": "🇵🇾"
-            },
-            "score": {
-                "home": 1,
-                "away": 1
-            },
-            "penalties": {
-                "home": 3,
-                "away": 4
-            },
-            "winner": "away"
+          "name": "Brasil",
+          "code": "BRA",
+          "flag": "🇧🇷"
         },
         {
-            "id": "M77",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Francia",
-                "code": "FRA",
-                "flag": "🇫🇷"
-            },
-            "away": {
-                "name": "Suecia",
-                "code": "SWE",
-                "flag": "🇸🇪"
-            },
-            "score": {
-                "home": 3,
-                "away": 0
-            },
-            "penalties": null,
-            "winner": "home"
+          "name": "Marruecos",
+          "code": "MAR",
+          "flag": "🇲🇦"
         },
         {
-            "id": "M73",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Sudáfrica",
-                "code": "RSA",
-                "flag": "🇿🇦"
-            },
-            "away": {
-                "name": "Canadá",
-                "code": "CAN",
-                "flag": "🇨🇦"
-            },
-            "score": {
-                "home": 0,
-                "away": 1
-            },
-            "penalties": null,
-            "winner": "away"
+          "name": "Escocia",
+          "code": "SCO",
+          "flag": "🏴"
         },
         {
-            "id": "M75",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Países Bajos",
-                "code": "NED",
-                "flag": "🇳🇱"
-            },
-            "away": {
-                "name": "Marruecos",
-                "code": "MAR",
-                "flag": "🇲🇦"
-            },
-            "score": {
-                "home": 1,
-                "away": 1
-            },
-            "penalties": {
-                "home": 2,
-                "away": 3
-            },
-            "winner": "away"
-        },
-        {
-            "id": "M83",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Portugal",
-                "code": "POR",
-                "flag": "🇵🇹"
-            },
-            "away": {
-                "name": "Croacia",
-                "code": "CRO",
-                "flag": "🇭🇷"
-            },
-            "score": {
-                "home": 2,
-                "away": 1
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M84",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "España",
-                "code": "ESP",
-                "flag": "🇪🇸"
-            },
-            "away": {
-                "name": "Austria",
-                "code": "AUT",
-                "flag": "🇦🇹"
-            },
-            "score": {
-                "home": 3,
-                "away": 0
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M81",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Estados Unidos",
-                "code": "USA",
-                "flag": "🇺🇸"
-            },
-            "away": {
-                "name": "Bosnia y Herzegovina",
-                "code": "BIH",
-                "flag": "🇧🇦"
-            },
-            "score": {
-                "home": 2,
-                "away": 0
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M82",
-            "round": "r32",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Bélgica",
-                "code": "BEL",
-                "flag": "🇧🇪"
-            },
-            "away": {
-                "name": "Senegal",
-                "code": "SEN",
-                "flag": "🇸🇳"
-            },
-            "score": {
-                "home": 3,
-                "away": 2
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M76",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Brasil",
-                "code": "BRA",
-                "flag": "🇧🇷"
-            },
-            "away": {
-                "name": "Japón",
-                "code": "JPN",
-                "flag": "🇯🇵"
-            },
-            "score": {
-                "home": 2,
-                "away": 1
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M78",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Costa de Marfil",
-                "code": "CIV",
-                "flag": "🇨🇮"
-            },
-            "away": {
-                "name": "Noruega",
-                "code": "NOR",
-                "flag": "🇳🇴"
-            },
-            "score": {
-                "home": 1,
-                "away": 2
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M79",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "México",
-                "code": "MEX",
-                "flag": "🇲🇽"
-            },
-            "away": {
-                "name": "Ecuador",
-                "code": "ECU",
-                "flag": "🇪🇨"
-            },
-            "score": {
-                "home": 2,
-                "away": 0
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M80",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Inglaterra",
-                "code": "ENG",
-                "flag": "🏴"
-            },
-            "away": {
-                "name": "RD Congo",
-                "code": "COD",
-                "flag": "🇨🇩"
-            },
-            "score": {
-                "home": 2,
-                "away": 1
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M86",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Argentina",
-                "code": "ARG",
-                "flag": "🇦🇷"
-            },
-            "away": {
-                "name": "Cabo Verde",
-                "code": "CPV",
-                "flag": "🇨🇻"
-            },
-            "score": {
-                "home": 3,
-                "away": 2
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M88",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Australia",
-                "code": "AUS",
-                "flag": "🇦🇺"
-            },
-            "away": {
-                "name": "Egipto",
-                "code": "EGY",
-                "flag": "🇪🇬"
-            },
-            "score": {
-                "home": 1,
-                "away": 1
-            },
-            "penalties": {
-                "home": 2,
-                "away": 4
-            },
-            "winner": "away"
-        },
-        {
-            "id": "M85",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Suiza",
-                "code": "SUI",
-                "flag": "🇨🇭"
-            },
-            "away": {
-                "name": "Argelia",
-                "code": "ALG",
-                "flag": "🇩🇿"
-            },
-            "score": {
-                "home": 2,
-                "away": 0
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M87",
-            "round": "r32",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Colombia",
-                "code": "COL",
-                "flag": "🇨🇴"
-            },
-            "away": {
-                "name": "Ghana",
-                "code": "GHA",
-                "flag": "🇬🇭"
-            },
-            "score": {
-                "home": 1,
-                "away": 0
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M89",
-            "round": "r16",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Paraguay",
-                "code": "PAR",
-                "flag": "🇵🇾"
-            },
-            "away": {
-                "name": "Francia",
-                "code": "FRA",
-                "flag": "🇫🇷"
-            },
-            "score": {
-                "home": 0,
-                "away": 1
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M90",
-            "round": "r16",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Canadá",
-                "code": "CAN",
-                "flag": "🇨🇦"
-            },
-            "away": {
-                "name": "Marruecos",
-                "code": "MAR",
-                "flag": "🇲🇦"
-            },
-            "score": {
-                "home": 0,
-                "away": 3
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M93",
-            "round": "r16",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Portugal",
-                "code": "POR",
-                "flag": "🇵🇹"
-            },
-            "away": {
-                "name": "España",
-                "code": "ESP",
-                "flag": "🇪🇸"
-            },
-            "score": {
-                "home": 0,
-                "away": 1
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M94",
-            "round": "r16",
-            "side": "left",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Estados Unidos",
-                "code": "USA",
-                "flag": "🇺🇸"
-            },
-            "away": {
-                "name": "Bélgica",
-                "code": "BEL",
-                "flag": "🇧🇪"
-            },
-            "score": {
-                "home": 1,
-                "away": 4
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M91",
-            "round": "r16",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Brasil",
-                "code": "BRA",
-                "flag": "🇧🇷"
-            },
-            "away": {
-                "name": "Noruega",
-                "code": "NOR",
-                "flag": "🇳🇴"
-            },
-            "score": {
-                "home": 1,
-                "away": 2
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M92",
-            "round": "r16",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "México",
-                "code": "MEX",
-                "flag": "🇲🇽"
-            },
-            "away": {
-                "name": "Inglaterra",
-                "code": "ENG",
-                "flag": "🏴"
-            },
-            "score": {
-                "home": 2,
-                "away": 3
-            },
-            "penalties": null,
-            "winner": "away"
-        },
-        {
-            "id": "M95",
-            "round": "r16",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Argentina",
-                "code": "ARG",
-                "flag": "🇦🇷"
-            },
-            "away": {
-                "name": "Egipto",
-                "code": "EGY",
-                "flag": "🇪🇬"
-            },
-            "score": {
-                "home": 3,
-                "away": 2
-            },
-            "penalties": null,
-            "winner": "home"
-        },
-        {
-            "id": "M96",
-            "round": "r16",
-            "side": "right",
-            "status": "finished",
-            "minute": null,
-            "kickoffLabel": "Finalizado",
-            "home": {
-                "name": "Suiza",
-                "code": "SUI",
-                "flag": "🇨🇭"
-            },
-            "away": {
-                "name": "Colombia",
-                "code": "COL",
-                "flag": "🇨🇴"
-            },
-            "score": {
-                "home": 0,
-                "away": 0
-            },
-            "penalties": {
-                "home": 4,
-                "away": 3
-            },
-            "winner": "home"
-        },
-        {
-            "id": "M97",
-            "round": "qf",
-            "side": "left",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "09/07/2026 14:00",
-            "home": {
-                "name": "Francia",
-                "code": "FRA",
-                "flag": "🇫🇷"
-            },
-            "away": {
-                "name": "Marruecos",
-                "code": "MAR",
-                "flag": "🇲🇦"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M98",
-            "round": "qf",
-            "side": "left",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "10/07/2026 13:00",
-            "home": {
-                "name": "España",
-                "code": "ESP",
-                "flag": "🇪🇸"
-            },
-            "away": {
-                "name": "Bélgica",
-                "code": "BEL",
-                "flag": "🇧🇪"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M99",
-            "round": "qf",
-            "side": "right",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "11/07/2026 15:00",
-            "home": {
-                "name": "Noruega",
-                "code": "NOR",
-                "flag": "🇳🇴"
-            },
-            "away": {
-                "name": "Inglaterra",
-                "code": "ENG",
-                "flag": "🏴"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M100",
-            "round": "qf",
-            "side": "right",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "11/07/2026 19:00",
-            "home": {
-                "name": "Argentina",
-                "code": "ARG",
-                "flag": "🇦🇷"
-            },
-            "away": {
-                "name": "Suiza",
-                "code": "SUI",
-                "flag": "🇨🇭"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M101",
-            "round": "sf",
-            "side": "left",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "14/07/2026 13:00",
-            "home": {
-                "name": "Ganador M97",
-                "code": "W97",
-                "flag": "⚽"
-            },
-            "away": {
-                "name": "Ganador M98",
-                "code": "W98",
-                "flag": "⚽"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M102",
-            "round": "sf",
-            "side": "right",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "15/07/2026 13:00",
-            "home": {
-                "name": "Ganador M99",
-                "code": "W99",
-                "flag": "⚽"
-            },
-            "away": {
-                "name": "Ganador M100",
-                "code": "W100",
-                "flag": "⚽"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M104",
-            "round": "final",
-            "side": "center",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "19/07/2026 13:00",
-            "home": {
-                "name": "Ganador M101",
-                "code": "W101",
-                "flag": "⚽"
-            },
-            "away": {
-                "name": "Ganador M102",
-                "code": "W102",
-                "flag": "⚽"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
-        },
-        {
-            "id": "M103",
-            "round": "third",
-            "side": "center",
-            "status": "scheduled",
-            "minute": null,
-            "kickoffLabel": "18/07/2026 15:00",
-            "home": {
-                "name": "Perdedor M101",
-                "code": "RU101",
-                "flag": "⚽"
-            },
-            "away": {
-                "name": "Perdedor M102",
-                "code": "RU102",
-                "flag": "⚽"
-            },
-            "score": {
-                "home": null,
-                "away": null
-            },
-            "penalties": null,
-            "winner": null
+          "name": "Haití",
+          "code": "HAI",
+          "flag": "🇭🇹"
         }
-    ]
+      ]
+    },
+    {
+      "id": "D",
+      "color": "#5764ff",
+      "teams": [
+        {
+          "name": "Estados Unidos",
+          "code": "USA",
+          "flag": "🇺🇸"
+        },
+        {
+          "name": "Australia",
+          "code": "AUS",
+          "flag": "🇦🇺"
+        },
+        {
+          "name": "Paraguay",
+          "code": "PAR",
+          "flag": "🇵🇾"
+        },
+        {
+          "name": "Turquía",
+          "code": "TUR",
+          "flag": "🇹🇷"
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "color": "#8d35ff",
+      "teams": [
+        {
+          "name": "Alemania",
+          "code": "GER",
+          "flag": "🇩🇪"
+        },
+        {
+          "name": "Costa de Marfil",
+          "code": "CIV",
+          "flag": "🇨🇮"
+        },
+        {
+          "name": "Ecuador",
+          "code": "ECU",
+          "flag": "🇪🇨"
+        },
+        {
+          "name": "Curazao",
+          "code": "CUW",
+          "flag": "🇨🇼"
+        }
+      ]
+    },
+    {
+      "id": "F",
+      "color": "#b5e627",
+      "teams": [
+        {
+          "name": "Países Bajos",
+          "code": "NED",
+          "flag": "🇳🇱"
+        },
+        {
+          "name": "Japón",
+          "code": "JPN",
+          "flag": "🇯🇵"
+        },
+        {
+          "name": "Suecia",
+          "code": "SWE",
+          "flag": "🇸🇪"
+        },
+        {
+          "name": "Túnez",
+          "code": "TUN",
+          "flag": "🇹🇳"
+        }
+      ]
+    },
+    {
+      "id": "G",
+      "color": "#ff4e9a",
+      "teams": [
+        {
+          "name": "Bélgica",
+          "code": "BEL",
+          "flag": "🇧🇪"
+        },
+        {
+          "name": "Egipto",
+          "code": "EGY",
+          "flag": "🇪🇬"
+        },
+        {
+          "name": "Irán",
+          "code": "IRN",
+          "flag": "🇮🇷"
+        },
+        {
+          "name": "Nueva Zelanda",
+          "code": "NZL",
+          "flag": "🇳🇿"
+        }
+      ]
+    },
+    {
+      "id": "H",
+      "color": "#2fd6c5",
+      "teams": [
+        {
+          "name": "España",
+          "code": "ESP",
+          "flag": "🇪🇸"
+        },
+        {
+          "name": "Cabo Verde",
+          "code": "CPV",
+          "flag": "🇨🇻"
+        },
+        {
+          "name": "Uruguay",
+          "code": "URU",
+          "flag": "🇺🇾"
+        },
+        {
+          "name": "Arabia Saudita",
+          "code": "KSA",
+          "flag": "🇸🇦"
+        }
+      ]
+    },
+    {
+      "id": "I",
+      "color": "#ba55ff",
+      "teams": [
+        {
+          "name": "Francia",
+          "code": "FRA",
+          "flag": "🇫🇷"
+        },
+        {
+          "name": "Noruega",
+          "code": "NOR",
+          "flag": "🇳🇴"
+        },
+        {
+          "name": "Senegal",
+          "code": "SEN",
+          "flag": "🇸🇳"
+        },
+        {
+          "name": "Irak",
+          "code": "IRQ",
+          "flag": "🇮🇶"
+        }
+      ]
+    },
+    {
+      "id": "J",
+      "color": "#5bc6e8",
+      "teams": [
+        {
+          "name": "Argentina",
+          "code": "ARG",
+          "flag": "🇦🇷"
+        },
+        {
+          "name": "Austria",
+          "code": "AUT",
+          "flag": "🇦🇹"
+        },
+        {
+          "name": "Argelia",
+          "code": "ALG",
+          "flag": "🇩🇿"
+        },
+        {
+          "name": "Jordania",
+          "code": "JOR",
+          "flag": "🇯🇴"
+        }
+      ]
+    },
+    {
+      "id": "K",
+      "color": "#ff6a3d",
+      "teams": [
+        {
+          "name": "Colombia",
+          "code": "COL",
+          "flag": "🇨🇴"
+        },
+        {
+          "name": "Portugal",
+          "code": "POR",
+          "flag": "🇵🇹"
+        },
+        {
+          "name": "RD Congo",
+          "code": "COD",
+          "flag": "🇨🇩"
+        },
+        {
+          "name": "Uzbekistán",
+          "code": "UZB",
+          "flag": "🇺🇿"
+        }
+      ]
+    },
+    {
+      "id": "L",
+      "color": "#45b6e8",
+      "teams": [
+        {
+          "name": "Inglaterra",
+          "code": "ENG",
+          "flag": "🏴"
+        },
+        {
+          "name": "Croacia",
+          "code": "CRO",
+          "flag": "🇭🇷"
+        },
+        {
+          "name": "Ghana",
+          "code": "GHA",
+          "flag": "🇬🇭"
+        },
+        {
+          "name": "Panamá",
+          "code": "PAN",
+          "flag": "🇵🇦"
+        }
+      ]
+    }
+  ],
+  "matches": [
+    {
+      "id": "M74",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Alemania",
+        "code": "GER",
+        "flag": "🇩🇪"
+      },
+      "away": {
+        "name": "Paraguay",
+        "code": "PAR",
+        "flag": "🇵🇾"
+      },
+      "score": {
+        "home": 1,
+        "away": 1
+      },
+      "penalties": {
+        "home": 3,
+        "away": 4
+      },
+      "winner": "away"
+    },
+    {
+      "id": "M77",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Francia",
+        "code": "FRA",
+        "flag": "🇫🇷"
+      },
+      "away": {
+        "name": "Suecia",
+        "code": "SWE",
+        "flag": "🇸🇪"
+      },
+      "score": {
+        "home": 3,
+        "away": 0
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M73",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Sudáfrica",
+        "code": "RSA",
+        "flag": "🇿🇦"
+      },
+      "away": {
+        "name": "Canadá",
+        "code": "CAN",
+        "flag": "🇨🇦"
+      },
+      "score": {
+        "home": 0,
+        "away": 1
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M75",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Países Bajos",
+        "code": "NED",
+        "flag": "🇳🇱"
+      },
+      "away": {
+        "name": "Marruecos",
+        "code": "MAR",
+        "flag": "🇲🇦"
+      },
+      "score": {
+        "home": 1,
+        "away": 1
+      },
+      "penalties": {
+        "home": 2,
+        "away": 3
+      },
+      "winner": "away"
+    },
+    {
+      "id": "M83",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Portugal",
+        "code": "POR",
+        "flag": "🇵🇹"
+      },
+      "away": {
+        "name": "Croacia",
+        "code": "CRO",
+        "flag": "🇭🇷"
+      },
+      "score": {
+        "home": 2,
+        "away": 1
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M84",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "España",
+        "code": "ESP",
+        "flag": "🇪🇸"
+      },
+      "away": {
+        "name": "Austria",
+        "code": "AUT",
+        "flag": "🇦🇹"
+      },
+      "score": {
+        "home": 3,
+        "away": 0
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M81",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Estados Unidos",
+        "code": "USA",
+        "flag": "🇺🇸"
+      },
+      "away": {
+        "name": "Bosnia y Herzegovina",
+        "code": "BIH",
+        "flag": "🇧🇦"
+      },
+      "score": {
+        "home": 2,
+        "away": 0
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M82",
+      "round": "r32",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Bélgica",
+        "code": "BEL",
+        "flag": "🇧🇪"
+      },
+      "away": {
+        "name": "Senegal",
+        "code": "SEN",
+        "flag": "🇸🇳"
+      },
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M76",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Brasil",
+        "code": "BRA",
+        "flag": "🇧🇷"
+      },
+      "away": {
+        "name": "Japón",
+        "code": "JPN",
+        "flag": "🇯🇵"
+      },
+      "score": {
+        "home": 2,
+        "away": 1
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M78",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Costa de Marfil",
+        "code": "CIV",
+        "flag": "🇨🇮"
+      },
+      "away": {
+        "name": "Noruega",
+        "code": "NOR",
+        "flag": "🇳🇴"
+      },
+      "score": {
+        "home": 1,
+        "away": 2
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M79",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "México",
+        "code": "MEX",
+        "flag": "🇲🇽"
+      },
+      "away": {
+        "name": "Ecuador",
+        "code": "ECU",
+        "flag": "🇪🇨"
+      },
+      "score": {
+        "home": 2,
+        "away": 0
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M80",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Inglaterra",
+        "code": "ENG",
+        "flag": "🏴"
+      },
+      "away": {
+        "name": "RD Congo",
+        "code": "COD",
+        "flag": "🇨🇩"
+      },
+      "score": {
+        "home": 2,
+        "away": 1
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M86",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Argentina",
+        "code": "ARG",
+        "flag": "🇦🇷"
+      },
+      "away": {
+        "name": "Cabo Verde",
+        "code": "CPV",
+        "flag": "🇨🇻"
+      },
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M88",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Australia",
+        "code": "AUS",
+        "flag": "🇦🇺"
+      },
+      "away": {
+        "name": "Egipto",
+        "code": "EGY",
+        "flag": "🇪🇬"
+      },
+      "score": {
+        "home": 1,
+        "away": 1
+      },
+      "penalties": {
+        "home": 2,
+        "away": 4
+      },
+      "winner": "away"
+    },
+    {
+      "id": "M85",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Suiza",
+        "code": "SUI",
+        "flag": "🇨🇭"
+      },
+      "away": {
+        "name": "Argelia",
+        "code": "ALG",
+        "flag": "🇩🇿"
+      },
+      "score": {
+        "home": 2,
+        "away": 0
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M87",
+      "round": "r32",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Colombia",
+        "code": "COL",
+        "flag": "🇨🇴"
+      },
+      "away": {
+        "name": "Ghana",
+        "code": "GHA",
+        "flag": "🇬🇭"
+      },
+      "score": {
+        "home": 1,
+        "away": 0
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M89",
+      "round": "r16",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Paraguay",
+        "code": "PAR",
+        "flag": "🇵🇾"
+      },
+      "away": {
+        "name": "Francia",
+        "code": "FRA",
+        "flag": "🇫🇷"
+      },
+      "score": {
+        "home": 0,
+        "away": 1
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M90",
+      "round": "r16",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Canadá",
+        "code": "CAN",
+        "flag": "🇨🇦"
+      },
+      "away": {
+        "name": "Marruecos",
+        "code": "MAR",
+        "flag": "🇲🇦"
+      },
+      "score": {
+        "home": 0,
+        "away": 3
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M93",
+      "round": "r16",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Portugal",
+        "code": "POR",
+        "flag": "🇵🇹"
+      },
+      "away": {
+        "name": "España",
+        "code": "ESP",
+        "flag": "🇪🇸"
+      },
+      "score": {
+        "home": 0,
+        "away": 1
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M94",
+      "round": "r16",
+      "side": "left",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Estados Unidos",
+        "code": "USA",
+        "flag": "🇺🇸"
+      },
+      "away": {
+        "name": "Bélgica",
+        "code": "BEL",
+        "flag": "🇧🇪"
+      },
+      "score": {
+        "home": 1,
+        "away": 4
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M91",
+      "round": "r16",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Brasil",
+        "code": "BRA",
+        "flag": "🇧🇷"
+      },
+      "away": {
+        "name": "Noruega",
+        "code": "NOR",
+        "flag": "🇳🇴"
+      },
+      "score": {
+        "home": 1,
+        "away": 2
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M92",
+      "round": "r16",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "México",
+        "code": "MEX",
+        "flag": "🇲🇽"
+      },
+      "away": {
+        "name": "Inglaterra",
+        "code": "ENG",
+        "flag": "🏴"
+      },
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "penalties": null,
+      "winner": "away"
+    },
+    {
+      "id": "M95",
+      "round": "r16",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Argentina",
+        "code": "ARG",
+        "flag": "🇦🇷"
+      },
+      "away": {
+        "name": "Egipto",
+        "code": "EGY",
+        "flag": "🇪🇬"
+      },
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "penalties": null,
+      "winner": "home"
+    },
+    {
+      "id": "M96",
+      "round": "r16",
+      "side": "right",
+      "status": "finished",
+      "minute": null,
+      "kickoffLabel": "Finalizado",
+      "home": {
+        "name": "Suiza",
+        "code": "SUI",
+        "flag": "🇨🇭"
+      },
+      "away": {
+        "name": "Colombia",
+        "code": "COL",
+        "flag": "🇨🇴"
+      },
+      "score": {
+        "home": 0,
+        "away": 0
+      },
+      "penalties": {
+        "home": 4,
+        "away": 3
+      },
+      "winner": "home"
+    },
+    {
+      "id": "M97",
+      "round": "qf",
+      "side": "left",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "09/07/2026 14:00",
+      "home": {
+        "name": "Francia",
+        "code": "FRA",
+        "flag": "🇫🇷"
+      },
+      "away": {
+        "name": "Marruecos",
+        "code": "MAR",
+        "flag": "🇲🇦"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M98",
+      "round": "qf",
+      "side": "left",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "10/07/2026 13:00",
+      "home": {
+        "name": "España",
+        "code": "ESP",
+        "flag": "🇪🇸"
+      },
+      "away": {
+        "name": "Bélgica",
+        "code": "BEL",
+        "flag": "🇧🇪"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M99",
+      "round": "qf",
+      "side": "right",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "11/07/2026 15:00",
+      "home": {
+        "name": "Noruega",
+        "code": "NOR",
+        "flag": "🇳🇴"
+      },
+      "away": {
+        "name": "Inglaterra",
+        "code": "ENG",
+        "flag": "🏴"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M100",
+      "round": "qf",
+      "side": "right",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "11/07/2026 19:00",
+      "home": {
+        "name": "Argentina",
+        "code": "ARG",
+        "flag": "🇦🇷"
+      },
+      "away": {
+        "name": "Suiza",
+        "code": "SUI",
+        "flag": "🇨🇭"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M101",
+      "round": "sf",
+      "side": "left",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "14/07/2026 13:00",
+      "home": {
+        "name": "Ganador M97",
+        "code": "W97",
+        "flag": "⚽"
+      },
+      "away": {
+        "name": "Ganador M98",
+        "code": "W98",
+        "flag": "⚽"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M102",
+      "round": "sf",
+      "side": "right",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "15/07/2026 13:00",
+      "home": {
+        "name": "Ganador M99",
+        "code": "W99",
+        "flag": "⚽"
+      },
+      "away": {
+        "name": "Ganador M100",
+        "code": "W100",
+        "flag": "⚽"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M104",
+      "round": "final",
+      "side": "center",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "19/07/2026 13:00",
+      "home": {
+        "name": "Ganador M101",
+        "code": "W101",
+        "flag": "⚽"
+      },
+      "away": {
+        "name": "Ganador M102",
+        "code": "W102",
+        "flag": "⚽"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    },
+    {
+      "id": "M103",
+      "round": "third",
+      "side": "center",
+      "status": "scheduled",
+      "minute": null,
+      "kickoffLabel": "18/07/2026 15:00",
+      "home": {
+        "name": "Perdedor M101",
+        "code": "RU101",
+        "flag": "⚽"
+      },
+      "away": {
+        "name": "Perdedor M102",
+        "code": "RU102",
+        "flag": "⚽"
+      },
+      "score": {
+        "home": null,
+        "away": null
+      },
+      "penalties": null,
+      "winner": null
+    }
+  ]
 }
