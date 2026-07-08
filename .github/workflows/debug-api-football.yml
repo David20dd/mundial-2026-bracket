@@ -1,0 +1,24 @@
+name: Debug API Football
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run API diagnostic
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_LEAGUE_ID: ${{ secrets.API_FOOTBALL_LEAGUE_ID }}
+          API_FOOTBALL_SEASON: ${{ secrets.API_FOOTBALL_SEASON }}
+        run: node scripts/debug-api-football.mjs
