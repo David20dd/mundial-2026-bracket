@@ -77,10 +77,25 @@ async function main() {
   const tournament = await readTournamentData();
 
   if (!LEAGUE_ID) {
-    throw new Error("Falta API_FOOTBALL_LEAGUE_ID en GitHub Secrets. Después lo agregaremos.");
+    throw new Error("Falta API_FOOTBALL_LEAGUE_ID en GitHub Secrets.");
   }
 
-  const fixtures = await fetchFixtures(LEAGUE_ID, SEASON);
+  const data = await fetchFixturesData(LEAGUE_ID, SEASON);
+  const apiErrors = data.errors || {};
+  const fixtures = data.response || [];
+
+  if (hasApiErrors(apiErrors)) {
+    console.log("La API respondió con errores. No se modificará data/tournament.json.");
+    console.log("Errores:", JSON.stringify(apiErrors, null, 2));
+    return;
+  }
+
+  if (!fixtures.length) {
+    console.log("La API devolvió 0 partidos. No se modificará data/tournament.json.");
+    console.log("Esto puede pasar si la temporada no está disponible para tu plan actual.");
+    return;
+  }
+
   const result = updateTournamentWithFixtures(tournament, fixtures);
 
   tournament.meta = {
@@ -117,21 +132,29 @@ async function apiGet(path) {
     throw new Error(`Error API-Football ${response.status}: ${text}`);
   }
 
-  const data = await response.json();
-
-  if (data.errors && Object.keys(data.errors).length > 0) {
-    console.log("Advertencias API:", data.errors);
-  }
-
-  return data;
+  return await response.json();
 }
 
-async function fetchFixtures(leagueId, season) {
-  const data = await apiGet(
+async function fetchFixturesData(leagueId, season) {
+  return await apiGet(
     `/fixtures?league=${encodeURIComponent(leagueId)}&season=${encodeURIComponent(season)}`
   );
+}
 
-  return data.response || [];
+function hasApiErrors(errors) {
+  if (!errors) {
+    return false;
+  }
+
+  if (Array.isArray(errors)) {
+    return errors.length > 0;
+  }
+
+  if (typeof errors === "object") {
+    return Object.keys(errors).length > 0;
+  }
+
+  return Boolean(errors);
 }
 
 function updateTournamentWithFixtures(tournament, fixtures) {
