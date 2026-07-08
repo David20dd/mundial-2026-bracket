@@ -987,3 +987,46 @@ body::before {
         font-size: 34px;
     }
 }
+/* =========================================================
+   MEJORA DE CALIDAD DE BANDERAS DEL BRACKET
+   Sin mover estructura ni tamaños generales
+   ========================================================= */
+
+.flag-img {
+  width: 26px;
+  height: 19px;
+  object-fit: cover;
+  display: inline-block;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.92);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.35),
+    0 2px 5px rgba(0,0,0,0.28);
+  image-rendering: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.group-team .flag-img {
+  width: 26px;
+  height: 19px;
+  border-radius: 3px;
+}
+
+.team-row .flag-img {
+  width: 25px;
+  height: 18px;
+  border-radius: 3px;
+}
+
+.flag-emoji {
+  width: 26px;
+  height: 19px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  line-height: 1;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.10);
+}
