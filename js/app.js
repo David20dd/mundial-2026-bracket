@@ -824,360 +824,668 @@ function shadeColor(color, percent) {
 
 /* =========================================================
    PARTIDO COMPLETO
+   Juego moderno con círculos + banderas + balón libre
    ========================================================= */
 
+const fullFlagCache = {};
+
 const fullMatchGame = {
-    canvas: null,
-    players: [],
-    ball: { x: 0, y: 0, r: 16, rotation: 0 },
-    running: false,
-    minute: 0,
-    homeScore: 0,
-    awayScore: 0,
-    playIndex: 0,
-    loopStarted: false,
-    actionLock: false,
-    maxPlays: 9
+  canvas: null,
+  players: [],
+  ball: {
+    x: 0,
+    y: 0,
+    r: 16,
+    vx: 0,
+    vy: 0,
+    rotation: 0
+  },
+  running: false,
+  paused: false,
+  minute: 0,
+  homeScore: 0,
+  awayScore: 0,
+  possession: "home",
+  lastFrameTime: 0,
+  loopStarted: false,
+  goalCooldown: false,
+  messageCooldown: 0
 };
 
 function initFullMatchGame() {
-    fullMatchGame.canvas = document.getElementById("fullMatchCanvas");
-    if (!fullMatchGame.canvas) return;
+  fullMatchGame.canvas = document.getElementById("fullMatchCanvas");
 
-    document.getElementById("startFullMatch")?.addEventListener("click", startFullMatchGame);
-    document.getElementById("resetFullMatch")?.addEventListener("click", resetFullMatchGame);
+  if (!fullMatchGame.canvas) {
+    return;
+  }
 
-    document.getElementById("fullHomeTeam")?.addEventListener("change", () => {
-        updateFullLabels();
-        resetFullMatchGame(false);
-    });
+  document.getElementById("startFullMatch")?.addEventListener("click", startFullMatchGame);
+  document.getElementById("resetFullMatch")?.addEventListener("click", resetFullMatchGame);
 
-    document.getElementById("fullAwayTeam")?.addEventListener("change", () => {
-        updateFullLabels();
-        resetFullMatchGame(false);
-    });
-
+  document.getElementById("fullHomeTeam")?.addEventListener("change", () => {
+    updateFullLabels();
     resetFullMatchGame(false);
-    startFullMatchLoop();
+  });
+
+  document.getElementById("fullAwayTeam")?.addEventListener("change", () => {
+    updateFullLabels();
+    resetFullMatchGame(false);
+  });
+
+  resetFullMatchGame(false);
+  startFullMatchLoop();
 }
 
 function startFullMatchLoop() {
-    if (fullMatchGame.loopStarted) return;
-    fullMatchGame.loopStarted = true;
+  if (fullMatchGame.loopStarted) {
+    return;
+  }
 
-    function frame(time) {
-        drawFullMatchScene(time);
-        requestAnimationFrame(frame);
-    }
+  fullMatchGame.loopStarted = true;
 
+  function frame(time) {
+    drawFullMatchScene(time);
     requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
 }
 
-function createFullPlayers() {
-    const canvas = fullMatchGame.canvas;
-    if (!canvas) return;
+function startFullMatchGame() {
+  const homeCode = document.getElementById("fullHomeTeam")?.value;
+  const awayCode = document.getElementById("fullAwayTeam")?.value;
 
-    const width = canvas.clientWidth || 1000;
-    const height = canvas.clientHeight || 540;
+  if (homeCode === awayCode) {
+    setFullMessage("Elige dos equipos diferentes.");
+    return;
+  }
 
-    const coords = [
-        { side: "home", keeper: true, x: 0.08, y: 0.56, n: 1 },
-        { side: "home", keeper: false, x: 0.18, y: 0.26, n: 2 },
-        { side: "home", keeper: false, x: 0.20, y: 0.46, n: 4 },
-        { side: "home", keeper: false, x: 0.18, y: 0.72, n: 6 },
-        { side: "home", keeper: false, x: 0.35, y: 0.38, n: 8 },
-        { side: "home", keeper: false, x: 0.38, y: 0.66, n: 10 },
+  resetFullMatchGame(false);
 
-        { side: "away", keeper: true, x: 0.92, y: 0.56, n: 1 },
-        { side: "away", keeper: false, x: 0.82, y: 0.26, n: 2 },
-        { side: "away", keeper: false, x: 0.80, y: 0.46, n: 4 },
-        { side: "away", keeper: false, x: 0.82, y: 0.72, n: 6 },
-        { side: "away", keeper: false, x: 0.65, y: 0.38, n: 8 },
-        { side: "away", keeper: false, x: 0.62, y: 0.66, n: 10 }
-    ];
+  fullMatchGame.running = true;
+  fullMatchGame.paused = false;
+  fullMatchGame.lastFrameTime = performance.now();
 
-    fullMatchGame.players = coords.map((p, index) => ({
-        ...p,
-        number: p.n,
-        baseX: p.x * width,
-        baseY: p.y * height,
-        x: p.x * width,
-        y: p.y * height,
-        scale: p.keeper ? 1.08 : 1,
-        running: false,
-        lean: 0,
-        dive: 0,
-        jump: false,
-        seed: index * 0.8
-    }));
-
-    fullMatchGame.ball.x = width / 2;
-    fullMatchGame.ball.y = height / 2;
-    fullMatchGame.ball.rotation = 0;
-}
-
-function resetFullPlayersToBase() {
-    fullMatchGame.players.forEach(player => {
-        player.x = player.baseX;
-        player.y = player.baseY;
-        player.running = false;
-        player.lean = 0;
-        player.dive = 0;
-        player.jump = false;
-    });
-
-    const canvas = fullMatchGame.canvas;
-    if (!canvas) return;
-
-    const width = canvas.clientWidth || 1000;
-    const height = canvas.clientHeight || 540;
-
-    fullMatchGame.ball.x = width / 2;
-    fullMatchGame.ball.y = height / 2;
-    fullMatchGame.ball.rotation = 0;
+  playWhistle("start");
+  setFullMessage("¡Suena el silbato inicial! El balón está en movimiento.");
 }
 
 function resetFullMatchGame(showMessage = true) {
-    fullMatchGame.running = false;
-    fullMatchGame.actionLock = false;
-    fullMatchGame.minute = 0;
-    fullMatchGame.homeScore = 0;
-    fullMatchGame.awayScore = 0;
-    fullMatchGame.playIndex = 0;
+  fullMatchGame.running = false;
+  fullMatchGame.paused = false;
+  fullMatchGame.minute = 0;
+  fullMatchGame.homeScore = 0;
+  fullMatchGame.awayScore = 0;
+  fullMatchGame.possession = "home";
+  fullMatchGame.goalCooldown = false;
+  fullMatchGame.messageCooldown = 0;
 
-    createFullPlayers();
-    updateFullLabels();
-    updateFullScoreboard();
+  createCirclePlayers();
+  resetBallToCenter();
 
-    if (showMessage) {
-        setFullMessage("Selecciona dos equipos para jugar.");
-    }
+  updateFullLabels();
+  updateFullScoreboard();
+
+  if (showMessage) {
+    setFullMessage("Selecciona dos equipos para jugar.");
+  }
 }
 
 function updateFullLabels() {
-    const home = getTeamByCode(document.getElementById("fullHomeTeam")?.value);
-    const away = getTeamByCode(document.getElementById("fullAwayTeam")?.value);
+  const home = getTeamByCode(document.getElementById("fullHomeTeam")?.value);
+  const away = getTeamByCode(document.getElementById("fullAwayTeam")?.value);
 
-    const homeName = document.getElementById("fullHomeName");
-    const awayName = document.getElementById("fullAwayName");
+  const homeName = document.getElementById("fullHomeName");
+  const awayName = document.getElementById("fullAwayName");
 
-    if (homeName) homeName.textContent = `${home.flag} ${home.name}`;
-    if (awayName) awayName.textContent = `${away.flag} ${away.name}`;
+  if (homeName) {
+    homeName.textContent = `${home.flag || ""} ${home.name}`;
+  }
+
+  if (awayName) {
+    awayName.textContent = `${away.flag || ""} ${away.name}`;
+  }
 }
 
 function updateFullScoreboard() {
-    const homeScore = document.getElementById("fullHomeScore");
-    const awayScore = document.getElementById("fullAwayScore");
-    const minute = document.getElementById("fullMatchMinute");
+  const homeScore = document.getElementById("fullHomeScore");
+  const awayScore = document.getElementById("fullAwayScore");
+  const minute = document.getElementById("fullMatchMinute");
 
-    if (homeScore) homeScore.textContent = fullMatchGame.homeScore;
-    if (awayScore) awayScore.textContent = fullMatchGame.awayScore;
-    if (minute) minute.textContent = `${String(fullMatchGame.minute).padStart(2, "0")}'`;
+  if (homeScore) {
+    homeScore.textContent = fullMatchGame.homeScore;
+  }
+
+  if (awayScore) {
+    awayScore.textContent = fullMatchGame.awayScore;
+  }
+
+  if (minute) {
+    minute.textContent = `${String(Math.floor(fullMatchGame.minute)).padStart(2, "0")}'`;
+  }
 }
 
 function setFullMessage(message) {
-    const el = document.getElementById("fullMatchMessage");
-    if (el) el.textContent = message;
+  const el = document.getElementById("fullMatchMessage");
+
+  if (el) {
+    el.textContent = message;
+  }
 }
 
-function getFullPlayersBySide(side) {
-    return fullMatchGame.players.filter(player => player.side === side && !player.keeper);
+function createCirclePlayers() {
+  const canvas = fullMatchGame.canvas;
+
+  if (!canvas) {
+    return;
+  }
+
+  const width = canvas.clientWidth || 1000;
+  const height = canvas.clientHeight || 540;
+
+  const homeCode = document.getElementById("fullHomeTeam")?.value || "MEX";
+  const awayCode = document.getElementById("fullAwayTeam")?.value || "RSA";
+
+  const homePositions = [
+    { role: "GK", number: 1, x: 0.08, y: 0.50 },
+    { role: "DEF", number: 2, x: 0.20, y: 0.25 },
+    { role: "DEF", number: 4, x: 0.20, y: 0.75 },
+    { role: "MID", number: 6, x: 0.36, y: 0.38 },
+    { role: "MID", number: 8, x: 0.36, y: 0.62 },
+    { role: "FWD", number: 10, x: 0.48, y: 0.50 }
+  ];
+
+  const awayPositions = [
+    { role: "GK", number: 1, x: 0.92, y: 0.50 },
+    { role: "DEF", number: 2, x: 0.80, y: 0.25 },
+    { role: "DEF", number: 4, x: 0.80, y: 0.75 },
+    { role: "MID", number: 6, x: 0.64, y: 0.38 },
+    { role: "MID", number: 8, x: 0.64, y: 0.62 },
+    { role: "FWD", number: 10, x: 0.52, y: 0.50 }
+  ];
+
+  const players = [];
+
+  homePositions.forEach((item, index) => {
+    players.push(makeCirclePlayer({
+      ...item,
+      id: `home-${index}`,
+      side: "home",
+      code: homeCode,
+      baseX: item.x * width,
+      baseY: item.y * height,
+      color: "#2ee66f"
+    }));
+  });
+
+  awayPositions.forEach((item, index) => {
+    players.push(makeCirclePlayer({
+      ...item,
+      id: `away-${index}`,
+      side: "away",
+      code: awayCode,
+      baseX: item.x * width,
+      baseY: item.y * height,
+      color: "#ff4164"
+    }));
+  });
+
+  fullMatchGame.players = players;
 }
 
-function getFullKeeper(side) {
-    return fullMatchGame.players.find(player => player.side === side && player.keeper);
+function makeCirclePlayer(config) {
+  return {
+    id: config.id,
+    side: config.side,
+    code: config.code,
+    role: config.role,
+    number: config.number,
+    x: config.baseX,
+    y: config.baseY,
+    baseX: config.baseX,
+    baseY: config.baseY,
+    vx: 0,
+    vy: 0,
+    r: config.role === "GK" ? 25 : 23,
+    color: config.color,
+    pulse: Math.random() * Math.PI * 2
+  };
 }
 
-async function startFullMatchGame() {
-    const homeCode = document.getElementById("fullHomeTeam")?.value;
-    const awayCode = document.getElementById("fullAwayTeam")?.value;
+function resetBallToCenter() {
+  const canvas = fullMatchGame.canvas;
 
-    if (homeCode === awayCode) {
-        setFullMessage("Elige dos equipos diferentes.");
-        return;
-    }
+  if (!canvas) {
+    return;
+  }
 
-    if (fullMatchGame.running) {
-        setFullMessage("El partido ya está en juego.");
-        return;
-    }
+  const width = canvas.clientWidth || 1000;
+  const height = canvas.clientHeight || 540;
 
-    resetFullMatchGame(false);
-    fullMatchGame.running = true;
-
-    playWhistle("start");
-    setFullMessage("¡Suena el silbato inicial! Empieza el partido.");
-
-    await wait(1000);
-
-    while (fullMatchGame.running && fullMatchGame.playIndex < fullMatchGame.maxPlays) {
-        await playFullSequence();
-    }
-
-    finishFullMatchGame();
-}
-
-async function playFullSequence() {
-    if (fullMatchGame.actionLock) return;
-
-    fullMatchGame.actionLock = true;
-
-    const side = Math.random() > 0.5 ? "home" : "away";
-    const attackPlayers = getFullPlayersBySide(side);
-    const defenceKeeper = getFullKeeper(side === "home" ? "away" : "home");
-
-    const homeTeam = getTeamByCode(document.getElementById("fullHomeTeam")?.value);
-    const awayTeam = getTeamByCode(document.getElementById("fullAwayTeam")?.value);
-
-    const attackTeam = side === "home" ? homeTeam : awayTeam;
-    const defendTeam = side === "home" ? awayTeam : homeTeam;
-
-    fullMatchGame.minute += randomInt(6, 12);
-    if (fullMatchGame.minute > 90) fullMatchGame.minute = 90;
-
-    updateFullScoreboard();
-    resetFullPlayersToBase();
-
-    setFullMessage(`${attackTeam.name} toca el balón y avanza con peligro.`);
-
-    const p1 = attackPlayers[0];
-    const p2 = attackPlayers[1];
-    const p3 = attackPlayers[2] || attackPlayers[1];
-
-    p1.running = true;
-    p2.running = true;
-    p3.running = true;
-
-    const canvas = fullMatchGame.canvas;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const laneDir = side === "home" ? 1 : -1;
-
-    await animate(850, t => {
-        const e = easeInOut(t);
-
-        p1.x = lerp(p1.baseX, p1.baseX + 70 * laneDir, e);
-        p2.x = lerp(p2.baseX, p2.baseX + 55 * laneDir, e);
-        p3.x = lerp(p3.baseX, p3.baseX + 85 * laneDir, e);
-
-        fullMatchGame.ball.x = lerp(width / 2, width / 2 + 80 * laneDir, e);
-        fullMatchGame.ball.y = lerp(height / 2, height / 2 - 25, e);
-        fullMatchGame.ball.rotation += 0.18 * laneDir;
-    });
-
-    setFullMessage(`${attackTeam.name} filtra un pase al atacante.`);
-
-    await animate(650, t => {
-        const e = easeInOut(t);
-
-        fullMatchGame.ball.x = lerp(width / 2 + 80 * laneDir, width / 2 + 190 * laneDir, e);
-        fullMatchGame.ball.y = lerp(height / 2 - 25, height / 2 - 50, e);
-        fullMatchGame.ball.rotation += 0.24 * laneDir;
-    });
-
-    const isGoal = Math.random() > 0.48;
-    setFullMessage(`${attackTeam.name} remata al arco...`);
-
-    if (defenceKeeper) {
-        defenceKeeper.dive = isGoal ? -0.22 * laneDir : 0.24 * laneDir;
-    }
-
-    await animate(750, t => {
-        const e = easeInOut(t);
-
-        if (side === "home") {
-            fullMatchGame.ball.x = lerp(width / 2 + 190, isGoal ? width - 26 : width - 110, e);
-            fullMatchGame.ball.y = lerp(height / 2 - 50, isGoal ? height * 0.40 : height * 0.50, e);
-        } else {
-            fullMatchGame.ball.x = lerp(width / 2 - 190, isGoal ? 26 : 110, e);
-            fullMatchGame.ball.y = lerp(height / 2 - 50, isGoal ? height * 0.40 : height * 0.50, e);
-        }
-
-        fullMatchGame.ball.rotation += 0.36 * laneDir;
-    });
-
-    if (isGoal) {
-        if (side === "home") {
-            fullMatchGame.homeScore++;
-        } else {
-            fullMatchGame.awayScore++;
-        }
-
-        updateFullScoreboard();
-
-        attackPlayers.forEach(player => {
-            player.jump = true;
-            player.running = true;
-            player.lean = randomBetween(-0.08, 0.08);
-        });
-
-        setFullMessage(`¡Goooool de ${attackTeam.name}! Excelente definición.`);
-        await wait(1000);
-    } else {
-        setFullMessage(`¡Atajada de ${defendTeam.name}! El portero salva el arco.`);
-        await wait(900);
-    }
-
-    fullMatchGame.playIndex++;
-    fullMatchGame.actionLock = false;
-
-    await wait(700);
-
-    if (fullMatchGame.minute >= 90) {
-        fullMatchGame.playIndex = fullMatchGame.maxPlays;
-    }
-}
-
-function finishFullMatchGame() {
-    if (!fullMatchGame.running && fullMatchGame.minute === 90) return;
-
-    fullMatchGame.running = false;
-    fullMatchGame.actionLock = false;
-    fullMatchGame.minute = 90;
-
-    updateFullScoreboard();
-    playWhistle("final");
-
-    const home = getTeamByCode(document.getElementById("fullHomeTeam")?.value);
-    const away = getTeamByCode(document.getElementById("fullAwayTeam")?.value);
-
-    if (fullMatchGame.homeScore > fullMatchGame.awayScore) {
-        setFullMessage(`¡Final del partido! ${home.name} gana ${fullMatchGame.homeScore}-${fullMatchGame.awayScore}.`);
-    } else if (fullMatchGame.awayScore > fullMatchGame.homeScore) {
-        setFullMessage(`¡Final del partido! ${away.name} gana ${fullMatchGame.awayScore}-${fullMatchGame.homeScore}.`);
-    } else {
-        setFullMessage(`¡Final del partido! Empate ${fullMatchGame.homeScore}-${fullMatchGame.awayScore}.`);
-    }
+  fullMatchGame.ball.x = width / 2;
+  fullMatchGame.ball.y = height / 2;
+  fullMatchGame.ball.vx = fullMatchGame.possession === "home" ? 3.4 : -3.4;
+  fullMatchGame.ball.vy = randomBetween(-1.1, 1.1);
+  fullMatchGame.ball.rotation = 0;
 }
 
 function drawFullMatchScene(time) {
-    const canvas = fullMatchGame.canvas;
-    if (!canvas) return;
+  const canvas = fullMatchGame.canvas;
 
-    const { ctx, width, height } = resizeCanvas(canvas);
+  if (!canvas) {
+    return;
+  }
 
-    drawField(ctx, width, height);
+  const { ctx, width, height } = resizeCanvas(canvas);
 
-    if (!fullMatchGame.players.length) {
-        createFullPlayers();
+  if (!fullMatchGame.players.length) {
+    createCirclePlayers();
+  }
+
+  if (fullMatchGame.running) {
+    updateFullMatchPhysics(time, width, height);
+  }
+
+  drawField(ctx, width, height);
+  drawFullMatchRadar(ctx, width, height);
+  drawGoalHighlights(ctx, width, height);
+
+  fullMatchGame.players
+    .slice()
+    .sort((a, b) => a.y - b.y)
+    .forEach(player => drawFlagCirclePlayer(ctx, player, time));
+
+  drawModernBall(ctx, fullMatchGame.ball);
+}
+
+function updateFullMatchPhysics(time, width, height) {
+  const last = fullMatchGame.lastFrameTime || time;
+  const delta = Math.min(0.035, (time - last) / 1000 || 0.016);
+
+  fullMatchGame.lastFrameTime = time;
+
+  if (fullMatchGame.goalCooldown) {
+    return;
+  }
+
+  fullMatchGame.minute += delta * 8.6;
+
+  if (fullMatchGame.minute >= 90) {
+    fullMatchGame.minute = 90;
+    finishFullMatchGame();
+    return;
+  }
+
+  if (fullMatchGame.messageCooldown > 0) {
+    fullMatchGame.messageCooldown -= delta;
+  }
+
+  updatePlayerMovement(width, height, delta);
+  updateBallMovement(width, height, delta);
+  detectPlayerBallTouches(width, height);
+  detectGoals(width, height);
+  updateFullScoreboard();
+}
+
+function updatePlayerMovement(width, height, delta) {
+  const ball = fullMatchGame.ball;
+
+  fullMatchGame.players.forEach(player => {
+    const isKeeper = player.role === "GK";
+    const attacking = player.side === fullMatchGame.possession;
+
+    let targetX = player.baseX;
+    let targetY = player.baseY;
+
+    if (isKeeper) {
+      const ownGoalX = player.side === "home" ? width * 0.055 : width * 0.945;
+      targetX = ownGoalX;
+      targetY = clamp(ball.y, height * 0.34, height * 0.66);
+    } else if (attacking) {
+      const attackDirection = player.side === "home" ? 1 : -1;
+      const distanceToBall = distance(player.x, player.y, ball.x, ball.y);
+
+      if (distanceToBall < 230 || player.role === "FWD") {
+        targetX = ball.x - attackDirection * randomBetween(28, 70);
+        targetY = ball.y + randomBetween(-70, 70);
+      } else {
+        targetX = player.baseX + attackDirection * 90;
+        targetY = player.baseY + Math.sin(performance.now() / 500 + player.pulse) * 32;
+      }
+    } else {
+      const defendDirection = player.side === "home" ? -1 : 1;
+      targetX = lerp(player.baseX, ball.x + defendDirection * 80, 0.45);
+      targetY = lerp(player.baseY, ball.y, 0.38);
     }
 
-    const homeCode = document.getElementById("fullHomeTeam")?.value;
-    const awayCode = document.getElementById("fullAwayTeam")?.value;
+    targetX = clamp(targetX, 34, width - 34);
+    targetY = clamp(targetY, 34, height - 34);
 
-    fullMatchGame.players
-        .slice()
-        .sort((a, b) => a.y - b.y)
-        .forEach(player => {
-            const code = player.side === "home" ? homeCode : awayCode;
-            const kit = player.keeper
-                ? { primary: "#2f89ff", secondary: "#ffffff", shorts: "#1a3d8a", socks: "#ffffff" }
-                : getKit(code);
+    const speed = isKeeper ? 5.2 : attacking ? 6.4 : 5.5;
+    const dx = targetX - player.x;
+    const dy = targetY - player.y;
 
-            drawSilhouettePlayer(ctx, player, kit, time);
-        });
+    player.vx += dx * speed * delta;
+    player.vy += dy * speed * delta;
 
-    drawModernBall(ctx, fullMatchGame.ball);
+    player.vx *= 0.88;
+    player.vy *= 0.88;
+
+    player.x += player.vx;
+    player.y += player.vy;
+
+    player.x = clamp(player.x, player.r + 8, width - player.r - 8);
+    player.y = clamp(player.y, player.r + 8, height - player.r - 8);
+  });
+}
+
+function updateBallMovement(width, height, delta) {
+  const ball = fullMatchGame.ball;
+
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+  ball.rotation += ball.vx * 0.025;
+
+  ball.vx *= 0.992;
+  ball.vy *= 0.992;
+
+  if (Math.abs(ball.vx) < 0.25) {
+    ball.vx += fullMatchGame.possession === "home" ? 0.18 : -0.18;
+  }
+
+  if (Math.abs(ball.vy) < 0.15) {
+    ball.vy += randomBetween(-0.12, 0.12);
+  }
+
+  if (ball.y < ball.r + 10) {
+    ball.y = ball.r + 10;
+    ball.vy *= -0.78;
+  }
+
+  if (ball.y > height - ball.r - 10) {
+    ball.y = height - ball.r - 10;
+    ball.vy *= -0.78;
+  }
+
+  if (ball.x < ball.r + 10) {
+    ball.x = ball.r + 10;
+    ball.vx *= -0.68;
+    fullMatchGame.possession = "home";
+  }
+
+  if (ball.x > width - ball.r - 10) {
+    ball.x = width - ball.r - 10;
+    ball.vx *= -0.68;
+    fullMatchGame.possession = "away";
+  }
+
+  if (Math.random() < 0.006) {
+    ball.vy += randomBetween(-1.4, 1.4);
+  }
+
+  if (Math.random() < 0.004) {
+    ball.vx += fullMatchGame.possession === "home"
+      ? randomBetween(0.5, 1.1)
+      : randomBetween(-1.1, -0.5);
+  }
+}
+
+function detectPlayerBallTouches(width, height) {
+  const ball = fullMatchGame.ball;
+
+  for (const player of fullMatchGame.players) {
+    const d = distance(player.x, player.y, ball.x, ball.y);
+    const touchDistance = player.r + ball.r + 4;
+
+    if (d > touchDistance) {
+      continue;
+    }
+
+    const attackDirection = player.side === "home" ? 1 : -1;
+    const goalX = player.side === "home" ? width - 20 : 20;
+    const goalY = height / 2 + randomBetween(-58, 58);
+
+    const towardGoalX = goalX - player.x;
+    const towardGoalY = goalY - player.y;
+    const len = Math.max(1, Math.hypot(towardGoalX, towardGoalY));
+
+    const power = player.role === "FWD"
+      ? randomBetween(6.6, 8.8)
+      : player.role === "MID"
+        ? randomBetween(5.2, 7.0)
+        : randomBetween(4.4, 6.0);
+
+    ball.vx = (towardGoalX / len) * power;
+    ball.vy = (towardGoalY / len) * power + randomBetween(-1.1, 1.1);
+
+    ball.x = player.x + (towardGoalX / len) * touchDistance;
+    ball.y = player.y + (towardGoalY / len) * touchDistance;
+
+    fullMatchGame.possession = player.side;
+
+    if (fullMatchGame.messageCooldown <= 0) {
+      const team = getTeamByCode(
+        player.side === "home"
+          ? document.getElementById("fullHomeTeam")?.value
+          : document.getElementById("fullAwayTeam")?.value
+      );
+
+      setFullMessage(`${team.name} mueve el balón con intensidad.`);
+      fullMatchGame.messageCooldown = 2.4;
+    }
+
+    if (Math.random() < 0.12) {
+      ball.vy += randomBetween(-3.4, 3.4);
+    }
+
+    if (player.role === "GK") {
+      ball.vx = Math.abs(ball.vx) * attackDirection;
+      ball.vy += randomBetween(-2.2, 2.2);
+    }
+
+    break;
+  }
+}
+
+function detectGoals(width, height) {
+  const ball = fullMatchGame.ball;
+  const goalTop = height * 0.39;
+  const goalBottom = height * 0.61;
+
+  const leftGoal = ball.x <= 18 && ball.y >= goalTop && ball.y <= goalBottom;
+  const rightGoal = ball.x >= width - 18 && ball.y >= goalTop && ball.y <= goalBottom;
+
+  if (!leftGoal && !rightGoal) {
+    return;
+  }
+
+  if (leftGoal) {
+    fullMatchGame.awayScore++;
+    fullMatchGame.possession = "home";
+    announceGoal("away");
+  }
+
+  if (rightGoal) {
+    fullMatchGame.homeScore++;
+    fullMatchGame.possession = "away";
+    announceGoal("home");
+  }
+
+  updateFullScoreboard();
+  fullMatchGame.goalCooldown = true;
+
+  setTimeout(() => {
+    resetBallToCenter();
+    createCirclePlayers();
+    fullMatchGame.goalCooldown = false;
+  }, 1600);
+}
+
+function announceGoal(side) {
+  const team = getTeamByCode(
+    side === "home"
+      ? document.getElementById("fullHomeTeam")?.value
+      : document.getElementById("fullAwayTeam")?.value
+  );
+
+  setFullMessage(`¡Goooool de ${team.name}! El balón cruza la línea.`);
+}
+
+function finishFullMatchGame() {
+  if (!fullMatchGame.running) {
+    return;
+  }
+
+  fullMatchGame.running = false;
+  fullMatchGame.goalCooldown = false;
+
+  playWhistle("final");
+  updateFullScoreboard();
+
+  const home = getTeamByCode(document.getElementById("fullHomeTeam")?.value);
+  const away = getTeamByCode(document.getElementById("fullAwayTeam")?.value);
+
+  if (fullMatchGame.homeScore > fullMatchGame.awayScore) {
+    setFullMessage(`¡Final del partido! ${home.name} gana ${fullMatchGame.homeScore}-${fullMatchGame.awayScore}.`);
+  } else if (fullMatchGame.awayScore > fullMatchGame.homeScore) {
+    setFullMessage(`¡Final del partido! ${away.name} gana ${fullMatchGame.awayScore}-${fullMatchGame.homeScore}.`);
+  } else {
+    setFullMessage(`¡Final del partido! Empate ${fullMatchGame.homeScore}-${fullMatchGame.awayScore}.`);
+  }
+}
+
+function drawFullMatchRadar(ctx, width, height) {
+  const gradient = ctx.createRadialGradient(
+    width / 2,
+    height / 2,
+    20,
+    width / 2,
+    height / 2,
+    width * 0.55
+  );
+
+  gradient.addColorStop(0, "rgba(255,255,255,0.10)");
+  gradient.addColorStop(1, "rgba(0,0,0,0)");
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+}
+
+function drawGoalHighlights(ctx, width, height) {
+  const goalTop = height * 0.39;
+  const goalHeight = height * 0.22;
+
+  ctx.save();
+
+  ctx.fillStyle = "rgba(255,255,255,0.10)";
+  ctx.fillRect(0, goalTop, 8, goalHeight);
+  ctx.fillRect(width - 8, goalTop, 8, goalHeight);
+
+  ctx.shadowColor = "rgba(255,255,255,0.50)";
+  ctx.shadowBlur = 12;
+  ctx.strokeStyle = "rgba(255,255,255,0.86)";
+  ctx.lineWidth = 3;
+
+  ctx.strokeRect(2, goalTop, 20, goalHeight);
+  ctx.strokeRect(width - 22, goalTop, 20, goalHeight);
+
+  ctx.restore();
+}
+
+function drawFlagCirclePlayer(ctx, player, time) {
+  const flagImage = getFullFlagImage(player.code);
+  const pulse = Math.sin(time / 250 + player.pulse) * 1.5;
+  const radius = player.r + pulse;
+
+  ctx.save();
+
+  ctx.translate(player.x, player.y);
+
+  ctx.shadowColor = player.side === "home"
+    ? "rgba(46,230,111,0.55)"
+    : "rgba(255,65,100,0.55)";
+  ctx.shadowBlur = 14;
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius + 4, 0, Math.PI * 2);
+  ctx.fillStyle = player.side === "home"
+    ? "rgba(46,230,111,0.28)"
+    : "rgba(255,65,100,0.28)";
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius, 0, Math.PI * 2);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(0, 0, radius - 3, 0, Math.PI * 2);
+  ctx.clip();
+
+  if (flagImage && flagImage.complete && flagImage.naturalWidth > 0) {
+    ctx.drawImage(flagImage, -radius, -radius, radius * 2, radius * 2);
+  } else {
+    const team = getTeamByCode(player.code);
+    ctx.fillStyle = "#202026";
+    ctx.fillRect(-radius, -radius, radius * 2, radius * 2);
+
+    ctx.font = `bold ${radius}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(team.flag || "⚽", 0, 1);
+  }
+
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius, 0, Math.PI * 2);
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = player.side === "home" ? "#2ee66f" : "#ff4164";
+  ctx.stroke();
+
+  ctx.fillStyle = "rgba(0,0,0,0.72)";
+  ctx.beginPath();
+  ctx.arc(radius * 0.52, radius * 0.52, 10, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 9px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(player.role, radius * 0.52, radius * 0.52);
+
+  ctx.restore();
+}
+
+function getFullFlagImage(code) {
+  const flagCode = flagCodeMap[code];
+
+  if (!flagCode) {
+    return null;
+  }
+
+  if (fullFlagCache[code]) {
+    return fullFlagCache[code];
+  }
+
+  const image = new Image();
+  image.crossOrigin = "anonymous";
+  image.src = `https://flagcdn.com/w160/${flagCode}.png`;
+
+  fullFlagCache[code] = image;
+
+  return image;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function distance(x1, y1, x2, y2) {
+  return Math.hypot(x2 - x1, y2 - y1);
 }
 
 /* =========================================================
