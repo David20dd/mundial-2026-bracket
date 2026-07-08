@@ -8,7 +8,7 @@ const LEAGUE_ID = process.env.API_FOOTBALL_LEAGUE_ID;
 const SEASON = process.env.API_FOOTBALL_SEASON || "2026";
 
 if (!API_KEY) {
-  throw new Error("Falta el secreto API_FOOTBALL_KEY en GitHub Actions.");
+  throw new Error("Falta API_FOOTBALL_KEY en GitHub Secrets.");
 }
 
 const statusMap = {
@@ -17,8 +17,6 @@ const statusMap = {
   PST: "scheduled",
   CANC: "scheduled",
   ABD: "scheduled",
-  AWD: "finished",
-  WO: "finished",
   "1H": "live",
   HT: "live",
   "2H": "live",
@@ -35,29 +33,22 @@ const statusMap = {
 const teamAliases = {
   MEX: ["mexico", "méxico"],
   RSA: ["south africa", "sudafrica", "sudáfrica"],
-  KOR: ["korea republic", "south korea", "corea del sur", "república de corea"],
-  CZE: ["czech republic", "czechia", "chequia", "republica checa", "república checa"],
-  SUI: ["switzerland", "suiza"],
+  KOR: ["korea republic", "south korea", "corea del sur"],
   CAN: ["canada", "canadá"],
-  BIH: ["bosnia and herzegovina", "bosnia", "bosnia y herzegovina"],
-  QAT: ["qatar", "catar"],
   BRA: ["brazil", "brasil"],
   MAR: ["morocco", "marruecos"],
-  SCO: ["scotland", "escocia"],
-  HAI: ["haiti", "haití"],
-  USA: ["usa", "united states", "united states of america", "estados unidos"],
+  USA: ["usa", "united states", "estados unidos"],
   AUS: ["australia"],
   PAR: ["paraguay"],
-  TUR: ["turkey", "turkiye", "türkiye", "turquía"],
   GER: ["germany", "alemania"],
-  CIV: ["cote d'ivoire", "côte d’ivoire", "ivory coast", "costa de marfil"],
+  CIV: ["cote d'ivoire", "ivory coast", "costa de marfil"],
   ECU: ["ecuador"],
   CUW: ["curacao", "curaçao", "curazao"],
   NED: ["netherlands", "holanda", "paises bajos", "países bajos"],
-  JPN: ["japan", "japón", "japon"],
+  JPN: ["japan", "japón"],
   SWE: ["sweden", "suecia"],
-  TUN: ["tunisia", "túnez", "tunez"],
-  BEL: ["belgium", "bélgica", "belgica"],
+  TUN: ["tunisia", "túnez"],
+  BEL: ["belgium", "bélgica"],
   EGY: ["egypt", "egipto"],
   IRN: ["iran", "irán"],
   NZL: ["new zealand", "nueva zelanda"],
@@ -68,14 +59,13 @@ const teamAliases = {
   FRA: ["france", "francia"],
   NOR: ["norway", "noruega"],
   SEN: ["senegal"],
-  IRQ: ["iraq", "irak"],
   ARG: ["argentina"],
   AUT: ["austria"],
   ALG: ["algeria", "argelia"],
   JOR: ["jordan", "jordania"],
   COL: ["colombia"],
   POR: ["portugal"],
-  COD: ["dr congo", "congo dr", "congo", "república democrática del congo", "rd congo"],
+  COD: ["dr congo", "congo dr", "rd congo", "republica democratica del congo"],
   UZB: ["uzbekistan", "uzbekistán"],
   ENG: ["england", "inglaterra"],
   CRO: ["croatia", "croacia"],
@@ -85,21 +75,19 @@ const teamAliases = {
 
 async function main() {
   const tournament = await readTournamentData();
-  const leagueId = LEAGUE_ID || await findWorldCupLeagueId();
 
-  if (!leagueId) {
-    throw new Error("No se encontró API_FOOTBALL_LEAGUE_ID. Agrega el ID de la competición en GitHub Secrets.");
+  if (!LEAGUE_ID) {
+    throw new Error("Falta API_FOOTBALL_LEAGUE_ID en GitHub Secrets. Después lo agregaremos.");
   }
 
-  const fixtures = await fetchFixtures(leagueId, SEASON);
-
+  const fixtures = await fetchFixtures(LEAGUE_ID, SEASON);
   const result = updateTournamentWithFixtures(tournament, fixtures);
 
   tournament.meta = {
     ...(tournament.meta || {}),
     updatedAt: new Date().toISOString(),
     source: "API-Football",
-    leagueId,
+    leagueId: LEAGUE_ID,
     season: SEASON,
     matchedFixtures: result.matched,
     totalApiFixtures: fixtures.length
@@ -138,21 +126,11 @@ async function apiGet(path) {
   return data;
 }
 
-async function findWorldCupLeagueId() {
-  const data = await apiGet(`/leagues?search=World%20Cup`);
-  const leagues = data.response || [];
-
-  const selected = leagues.find(item => {
-    const name = normalizeText(item.league?.name || "");
-    const type = normalizeText(item.league?.type || "");
-    return name.includes("world cup") && type.includes("cup");
-  });
-
-  return selected?.league?.id ? String(selected.league.id) : "";
-}
-
 async function fetchFixtures(leagueId, season) {
-  const data = await apiGet(`/fixtures?league=${encodeURIComponent(leagueId)}&season=${encodeURIComponent(season)}`);
+  const data = await apiGet(
+    `/fixtures?league=${encodeURIComponent(leagueId)}&season=${encodeURIComponent(season)}`
+  );
+
   return data.response || [];
 }
 
@@ -309,7 +287,7 @@ function isPlaceholderTeam(team) {
     code.startsWith("P") ||
     name.includes("por definir") ||
     name.includes("winner") ||
-    name.includes("play-off") ||
+    name.includes("play off") ||
     name.includes("playoff")
   );
 }
