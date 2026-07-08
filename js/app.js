@@ -876,7 +876,8 @@ const fullMatchGame = {
   lastFrameTime: 0,
   loopStarted: false,
   goalCooldown: false,
-  messageCooldown: 0
+  messageCooldown: 0,
+  touchLock: 0
 };
 
 function initFullMatchGame() {
@@ -949,6 +950,7 @@ function resetFullMatchGame(showMessage = true) {
   fullMatchGame.possession = "home";
   fullMatchGame.goalCooldown = false;
   fullMatchGame.messageCooldown = 0;
+  fullMatchGame.touchLock = 0;
 
   createCirclePlayers();
   resetBallToCenter();
@@ -1078,7 +1080,8 @@ function makeCirclePlayer(config) {
     vy: 0,
     r: config.role === "GK" ? 25 : 23,
     color: config.color,
-    pulse: Math.random() * Math.PI * 2
+    pulse: Math.random() * Math.PI * 2,
+    touchCooldown: 0
   };
 }
 
@@ -1095,9 +1098,11 @@ function resetBallToCenter() {
   fullMatchGame.ball.x = width / 2;
   fullMatchGame.ball.y = height / 2;
 
-  fullMatchGame.ball.vx = fullMatchGame.possession === "home" ? 1.9 : -1.9;
-  fullMatchGame.ball.vy = randomBetween(-0.45, 0.45);
+  fullMatchGame.ball.vx = fullMatchGame.possession === "home" ? 0.85 : -0.85;
+  fullMatchGame.ball.vy = randomBetween(-0.25, 0.25);
   fullMatchGame.ball.rotation = 0;
+
+  fullMatchGame.touchLock = 0;
 }
 
 function drawFullMatchScene(time) {
@@ -1131,7 +1136,7 @@ function drawFullMatchScene(time) {
 
 function updateFullMatchPhysics(time, width, height) {
   const last = fullMatchGame.lastFrameTime || time;
-  const delta = Math.min(0.030, (time - last) / 1000 || 0.016);
+  const delta = Math.min(0.028, (time - last) / 1000 || 0.016);
 
   fullMatchGame.lastFrameTime = time;
 
@@ -1139,7 +1144,7 @@ function updateFullMatchPhysics(time, width, height) {
     return;
   }
 
-  fullMatchGame.minute += delta * 5.2;
+  fullMatchGame.minute += delta * 4.2;
 
   if (fullMatchGame.minute >= 90) {
     fullMatchGame.minute = 90;
@@ -1151,6 +1156,16 @@ function updateFullMatchPhysics(time, width, height) {
     fullMatchGame.messageCooldown -= delta;
   }
 
+  if (fullMatchGame.touchLock > 0) {
+    fullMatchGame.touchLock -= delta;
+  }
+
+  fullMatchGame.players.forEach(player => {
+    if (player.touchCooldown > 0) {
+      player.touchCooldown -= delta;
+    }
+  });
+
   updatePlayerMovement(width, height, delta);
   updateBallMovement(width, height);
   detectPlayerBallTouches(width, height);
@@ -1160,73 +1175,65 @@ function updateFullMatchPhysics(time, width, height) {
 
 function updatePlayerMovement(width, height, delta) {
   const ball = fullMatchGame.ball;
-  const fieldCenterX = width / 2;
+  const centerX = width / 2;
+
+  const homeNearest = getNearestPlayersToBall("home");
+  const awayNearest = getNearestPlayersToBall("away");
 
   fullMatchGame.players.forEach(player => {
     const isKeeper = player.role === "GK";
     const attacking = player.side === fullMatchGame.possession;
     const attackDirection = player.side === "home" ? 1 : -1;
 
+    const nearestList = player.side === "home" ? homeNearest : awayNearest;
+    const isMainChaser = nearestList[0]?.id === player.id;
+    const isSecondChaser = nearestList[1]?.id === player.id;
+
     let targetX = player.baseX;
     let targetY = player.baseY;
 
     if (isKeeper) {
       const ownGoalX = player.side === "home" ? width * 0.055 : width * 0.945;
+
       targetX = ownGoalX;
-      targetY = clamp(ball.y, height * 0.36, height * 0.64);
+      targetY = clamp(ball.y, height * 0.38, height * 0.62);
+    } else if (attacking) {
+      if (isMainChaser) {
+        targetX = ball.x - attackDirection * 36;
+        targetY = ball.y;
+      } else if (player.role === "FWD") {
+        targetX = clamp(ball.x + attackDirection * 145, width * 0.08, width * 0.92);
+        targetY = player.baseY + Math.sin(performance.now() / 1300 + player.pulse) * 55;
+      } else if (player.role === "MID") {
+        targetX = lerp(player.baseX, ball.x - attackDirection * 90, 0.34);
+        targetY = player.baseY + Math.sin(performance.now() / 1200 + player.pulse) * 46;
+      } else if (player.role === "DEF") {
+        targetX = lerp(player.baseX, centerX - attackDirection * 140, 0.22);
+        targetY = player.baseY + Math.sin(performance.now() / 1450 + player.pulse) * 34;
+      }
     } else {
-      const ballZoneX = ball.x / width;
-      const ballZoneY = ball.y / height;
-
-      if (attacking) {
-        if (player.role === "FWD") {
-          targetX = ball.x + attackDirection * 95;
-          targetY = ball.y + Math.sin(performance.now() / 900 + player.pulse) * 90;
-        }
-
-        if (player.role === "MID") {
-          targetX = lerp(player.baseX, ball.x - attackDirection * 65, 0.55);
-          targetY = lerp(player.baseY, ball.y, 0.55);
-        }
-
-        if (player.role === "DEF") {
-          targetX = lerp(player.baseX, fieldCenterX - attackDirection * 120, 0.35);
-          targetY = player.baseY + Math.sin(performance.now() / 1100 + player.pulse) * 45;
-        }
-      } else {
-        if (player.role === "FWD") {
-          targetX = lerp(player.baseX, fieldCenterX + attackDirection * 40, 0.35);
-          targetY = lerp(player.baseY, ball.y, 0.28);
-        }
-
-        if (player.role === "MID") {
-          targetX = lerp(player.baseX, ball.x + attackDirection * 80, 0.42);
-          targetY = lerp(player.baseY, ball.y, 0.45);
-        }
-
-        if (player.role === "DEF") {
-          targetX = lerp(player.baseX, ball.x + attackDirection * 130, 0.38);
-          targetY = lerp(player.baseY, ball.y, 0.35);
-        }
-      }
-
-      if (player.role === "DEF") {
-        targetY += ballZoneY < 0.5 ? 28 : -28;
-      }
-
-      if (player.role === "MID") {
-        targetY += Math.sin(performance.now() / 800 + player.pulse) * 22;
-      }
-
-      if (player.role === "FWD") {
-        targetY += ballZoneX > 0.5 ? -18 : 18;
+      if (isMainChaser) {
+        targetX = ball.x + attackDirection * 42;
+        targetY = ball.y;
+      } else if (isSecondChaser && player.role !== "FWD") {
+        targetX = ball.x + attackDirection * 105;
+        targetY = ball.y + Math.sin(performance.now() / 900 + player.pulse) * 58;
+      } else if (player.role === "DEF") {
+        targetX = lerp(player.baseX, ball.x + attackDirection * 150, 0.26);
+        targetY = lerp(player.baseY, ball.y, 0.26);
+      } else if (player.role === "MID") {
+        targetX = lerp(player.baseX, ball.x + attackDirection * 115, 0.20);
+        targetY = player.baseY + Math.sin(performance.now() / 1100 + player.pulse) * 42;
+      } else if (player.role === "FWD") {
+        targetX = lerp(player.baseX, centerX + attackDirection * 65, 0.20);
+        targetY = player.baseY + Math.sin(performance.now() / 1350 + player.pulse) * 38;
       }
     }
 
-    targetX = clamp(targetX, 38, width - 38);
-    targetY = clamp(targetY, 38, height - 38);
+    targetX = clamp(targetX, 42, width - 42);
+    targetY = clamp(targetY, 42, height - 42);
 
-    const speed = isKeeper ? 3.4 : attacking ? 4.2 : 3.7;
+    const speed = isKeeper ? 2.25 : isMainChaser ? 3.15 : isSecondChaser ? 2.65 : 2.05;
 
     const dx = targetX - player.x;
     const dy = targetY - player.y;
@@ -1234,14 +1241,14 @@ function updatePlayerMovement(width, height, delta) {
     player.vx += dx * speed * delta;
     player.vy += dy * speed * delta;
 
-    player.vx *= 0.90;
-    player.vy *= 0.90;
+    player.vx *= 0.91;
+    player.vy *= 0.91;
 
     player.x += player.vx;
     player.y += player.vy;
 
-    player.x = clamp(player.x, player.r + 8, width - player.r - 8);
-    player.y = clamp(player.y, player.r + 8, height - player.r - 8);
+    player.x = clamp(player.x, player.r + 10, width - player.r - 10);
+    player.y = clamp(player.y, player.r + 10, height - player.r - 10);
   });
 }
 
@@ -1252,153 +1259,170 @@ function updateBallMovement(width, height) {
 
   ball.x += ball.vx;
   ball.y += ball.vy;
-  ball.rotation += ball.vx * 0.020;
+  ball.rotation += ball.vx * 0.016;
 
-  ball.vx *= 0.986;
-  ball.vy *= 0.986;
+  ball.vx *= 0.990;
+  ball.vy *= 0.990;
 
-  if (Math.abs(ball.vx) < 0.18) {
-    ball.vx += fullMatchGame.possession === "home" ? 0.08 : -0.08;
+  limitBallSpeed(ball, 4.7);
+
+  if (Math.abs(ball.vx) < 0.10) {
+    ball.vx += fullMatchGame.possession === "home" ? 0.045 : -0.045;
   }
 
-  if (Math.abs(ball.vy) < 0.10) {
-    ball.vy += randomBetween(-0.05, 0.05);
+  if (Math.abs(ball.vy) < 0.07) {
+    ball.vy += randomBetween(-0.035, 0.035);
   }
 
   if (ball.y < ball.r + 10) {
     ball.y = ball.r + 10;
-    ball.vy *= -0.72;
+    ball.vy *= -0.66;
   }
 
   if (ball.y > height - ball.r - 10) {
     ball.y = height - ball.r - 10;
-    ball.vy *= -0.72;
+    ball.vy *= -0.66;
   }
 
   const inGoalMouth = ball.y >= goalTop && ball.y <= goalBottom;
 
   if (ball.x < ball.r + 10 && !inGoalMouth) {
     ball.x = ball.r + 10;
-    ball.vx *= -0.62;
+    ball.vx *= -0.58;
     fullMatchGame.possession = "home";
   }
 
   if (ball.x > width - ball.r - 10 && !inGoalMouth) {
     ball.x = width - ball.r - 10;
-    ball.vx *= -0.62;
+    ball.vx *= -0.58;
     fullMatchGame.possession = "away";
   }
 
-  if (Math.random() < 0.003) {
-    ball.vy += randomBetween(-0.55, 0.55);
-  }
-
-  if (Math.random() < 0.0025) {
-    ball.vx += fullMatchGame.possession === "home"
-      ? randomBetween(0.16, 0.38)
-      : randomBetween(-0.38, -0.16);
+  if (Math.random() < 0.0016) {
+    ball.vy += randomBetween(-0.32, 0.32);
   }
 }
 
 function detectPlayerBallTouches(width, height) {
+  if (fullMatchGame.touchLock > 0) {
+    return;
+  }
+
   const ball = fullMatchGame.ball;
 
-  for (const player of fullMatchGame.players) {
-    const d = distance(player.x, player.y, ball.x, ball.y);
-    const touchDistance = player.r + ball.r + 4;
+  const candidates = fullMatchGame.players
+    .map(player => ({
+      player,
+      distance: distance(player.x, player.y, ball.x, ball.y)
+    }))
+    .filter(item => item.distance <= item.player.r + ball.r + 5)
+    .sort((a, b) => a.distance - b.distance);
 
-    if (d > touchDistance) {
-      continue;
-    }
+  if (!candidates.length) {
+    return;
+  }
 
-    const attackDirection = player.side === "home" ? 1 : -1;
-    const teamPlayers = fullMatchGame.players.filter(item => item.side === player.side && item.id !== player.id);
-    const opponentGoalX = player.side === "home" ? width - 22 : 22;
+  const player = candidates[0].player;
 
-    let targetX;
-    let targetY;
-    let power;
+  if (player.touchCooldown > 0) {
+    return;
+  }
 
-    const closeToGoal = player.side === "home"
-      ? player.x > width * 0.72
-      : player.x < width * 0.28;
+  const teamPlayers = fullMatchGame.players.filter(item => item.side === player.side && item.id !== player.id);
+  const opponentGoalX = player.side === "home" ? width - 24 : 24;
 
-    const shouldShoot = closeToGoal && (player.role === "FWD" || Math.random() < 0.35);
+  const closeToGoal = player.side === "home"
+    ? player.x > width * 0.74
+    : player.x < width * 0.26;
+
+  const shouldShoot = closeToGoal && (player.role === "FWD" || Math.random() < 0.28);
+
+  let targetX;
+  let targetY;
+  let power;
+
+  if (player.role === "GK") {
+    const passTarget = chooseSafePassTarget(player, teamPlayers, width, height);
+
+    targetX = passTarget.x;
+    targetY = passTarget.y;
+    power = randomBetween(2.4, 3.3);
+  } else if (shouldShoot) {
+    targetX = opponentGoalX;
+    targetY = height / 2 + randomBetween(-48, 48);
+    power = player.role === "FWD" ? randomBetween(3.8, 4.8) : randomBetween(3.3, 4.2);
+  } else {
+    const passTarget = chooseDistributedPassTarget(player, teamPlayers, width, height);
+
+    targetX = passTarget.x;
+    targetY = passTarget.y;
+    power = randomBetween(2.2, 3.45);
+  }
+
+  const dx = targetX - player.x;
+  const dy = targetY - player.y;
+  const len = Math.max(1, Math.hypot(dx, dy));
+
+  ball.vx = (dx / len) * power;
+  ball.vy = (dy / len) * power;
+
+  ball.x = player.x + (dx / len) * (player.r + ball.r + 5);
+  ball.y = player.y + (dy / len) * (player.r + ball.r + 5);
+
+  limitBallSpeed(ball, 4.8);
+
+  player.touchCooldown = 0.85;
+  fullMatchGame.touchLock = 0.42;
+  fullMatchGame.possession = player.side;
+
+  if (fullMatchGame.messageCooldown <= 0) {
+    const team = getTeamByCode(
+      player.side === "home"
+        ? document.getElementById("fullHomeTeam")?.value
+        : document.getElementById("fullAwayTeam")?.value
+    );
 
     if (shouldShoot) {
-      targetX = opponentGoalX;
-      targetY = height / 2 + randomBetween(-54, 54);
-      power = player.role === "FWD" ? randomBetween(4.9, 6.3) : randomBetween(4.3, 5.4);
+      setFullMessage(`${team.name} remata buscando el arco.`);
     } else {
-      const passTarget = chooseDistributedPassTarget(player, teamPlayers, width, height);
-
-      targetX = passTarget.x;
-      targetY = passTarget.y;
-      power = randomBetween(3.2, 4.8);
+      setFullMessage(`${team.name} toca el balón y cambia de zona.`);
     }
 
-    const dx = targetX - player.x;
-    const dy = targetY - player.y;
-    const len = Math.max(1, Math.hypot(dx, dy));
-
-    ball.vx = (dx / len) * power;
-    ball.vy = (dy / len) * power;
-
-    ball.x = player.x + (dx / len) * touchDistance;
-    ball.y = player.y + (dy / len) * touchDistance;
-
-    fullMatchGame.possession = player.side;
-
-    if (fullMatchGame.messageCooldown <= 0) {
-      const team = getTeamByCode(
-        player.side === "home"
-          ? document.getElementById("fullHomeTeam")?.value
-          : document.getElementById("fullAwayTeam")?.value
-      );
-
-      if (shouldShoot) {
-        setFullMessage(`${team.name} remata buscando el gol.`);
-      } else {
-        setFullMessage(`${team.name} toca y cambia el ritmo del partido.`);
-      }
-
-      fullMatchGame.messageCooldown = 2.8;
-    }
-
-    if (player.role === "GK") {
-      ball.vx = Math.abs(ball.vx) * attackDirection;
-      ball.vy += randomBetween(-1.2, 1.2);
-    }
-
-    break;
+    fullMatchGame.messageCooldown = 3.1;
   }
 }
 
 function chooseDistributedPassTarget(player, teamPlayers, width, height) {
   const attackDirection = player.side === "home" ? 1 : -1;
 
-  const goodTargets = teamPlayers
-    .filter(item => item.role !== "GK")
+  const filtered = teamPlayers.filter(item => item.role !== "GK");
+
+  const goodTargets = filtered
     .map(item => {
-      const forwardBonus = attackDirection === 1
+      const forwardValue = attackDirection === 1
         ? item.x - player.x
         : player.x - item.x;
 
-      const verticalDistance = Math.abs(item.y - player.y);
-      const centralBonus = 1 - Math.abs((item.y / height) - 0.5);
+      const distanceY = Math.abs(item.y - player.y);
+      const distanceX = Math.abs(item.x - player.x);
+
+      const notTooClose = distanceX > 90 ? 60 : -80;
+      const switchSideBonus = distanceY > 100 ? 70 : 0;
+      const forwardBonus = forwardValue > 0 ? forwardValue * 0.45 : forwardValue * 0.12;
 
       return {
         player: item,
         score:
-          forwardBonus * 0.70 -
-          verticalDistance * 0.35 +
-          centralBonus * 90 +
+          forwardBonus +
+          switchSideBonus +
+          notTooClose -
+          distanceY * 0.12 +
           randomBetween(-35, 35)
       };
     })
     .sort((a, b) => b.score - a.score);
 
-  const selected = goodTargets[0]?.player || teamPlayers[0];
+  const selected = goodTargets[0]?.player;
 
   if (!selected) {
     return {
@@ -1409,16 +1433,62 @@ function chooseDistributedPassTarget(player, teamPlayers, width, height) {
 
   return {
     x: clamp(
-      selected.x + attackDirection * randomBetween(28, 75),
-      40,
-      width - 40
+      selected.x + attackDirection * randomBetween(35, 85),
+      44,
+      width - 44
     ),
     y: clamp(
-      selected.y + randomBetween(-48, 48),
-      40,
-      height - 40
+      selected.y + randomBetween(-58, 58),
+      44,
+      height - 44
     )
   };
+}
+
+function chooseSafePassTarget(player, teamPlayers, width, height) {
+  const attackDirection = player.side === "home" ? 1 : -1;
+
+  const defendersAndMidfielders = teamPlayers
+    .filter(item => item.role === "DEF" || item.role === "MID")
+    .sort((a, b) => {
+      const aForward = attackDirection === 1 ? a.x : width - a.x;
+      const bForward = attackDirection === 1 ? b.x : width - b.x;
+
+      return aForward - bForward;
+    });
+
+  const selected = defendersAndMidfielders[0] || teamPlayers[0];
+
+  if (!selected) {
+    return {
+      x: width / 2,
+      y: height / 2
+    };
+  }
+
+  return {
+    x: clamp(selected.x + attackDirection * 65, 44, width - 44),
+    y: clamp(selected.y + randomBetween(-35, 35), 44, height - 44)
+  };
+}
+
+function getNearestPlayersToBall(side) {
+  return fullMatchGame.players
+    .filter(player => player.side === side && player.role !== "GK")
+    .map(player => ({
+      ...player,
+      distanceToBall: distance(player.x, player.y, fullMatchGame.ball.x, fullMatchGame.ball.y)
+    }))
+    .sort((a, b) => a.distanceToBall - b.distanceToBall);
+}
+
+function limitBallSpeed(ball, maxSpeed) {
+  const speed = Math.hypot(ball.vx, ball.vy);
+
+  if (speed > maxSpeed) {
+    ball.vx = (ball.vx / speed) * maxSpeed;
+    ball.vy = (ball.vy / speed) * maxSpeed;
+  }
 }
 
 function detectGoals(width, height) {
