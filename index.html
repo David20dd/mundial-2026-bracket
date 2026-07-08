@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Mundial 2026 | Bracket Interactivo</title>
+
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-icon">🏆</span>
+
+            <div>
+                <h1>Mundial 2026</h1>
+                <p>Bracket, resultados y modalidades</p>
+            </div>
+        </div>
+
+        <nav class="main-nav">
+            <a href="#inicio">Inicio</a>
+            <a href="#modalidades">Modalidades</a>
+            <a href="#bracket">Bracket</a>
+            <a href="#fullMatchGame">Partido</a>
+            <a href="#penalesGame">Penales</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- INICIO -->
+        <section id="inicio" class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">FIFA World Cup 2026</p>
+
+                <h2>Bracket interactivo del Mundial</h2>
+
+                <p>
+                    Visualiza los partidos, marcadores, estados en vivo, resultados finales
+                    y cruces de eliminación directa.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn primary" href="#bracket">Ver bracket</a>
+                    <a class="btn secondary" href="#modalidades">Ver modalidades</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODALIDADES -->
+        <section id="modalidades" class="modes-section">
+            <div class="section-heading">
+                <p class="eyebrow">Modos disponibles</p>
+
+                <h2>Modalidades de juego</h2>
+
+                <p>
+                    Estas opciones quedan listas para jugar partido completo, tanda de penales,
+                    selección de equipos, estadísticas y animaciones.
+                </p>
+            </div>
+
+            <div class="mode-grid">
+                <article class="mode-card" data-mode="full">
+                    <div class="mode-icon">⚽</div>
+
+                    <h3>Partido completo</h3>
+
+                    <p>
+                        Simula un partido entre dos países, con marcador, jugadores animados,
+                        porteros, goles y ganador final.
+                    </p>
+
+                    <button class="btn small" type="button">Abrir modo</button>
+                </article>
+
+                <article class="mode-card" data-mode="penalties">
+                    <div class="mode-icon">🥅</div>
+
+                    <h3>Penales</h3>
+
+                    <p>
+                        Juega una tanda de penales entre dos países, con portero, tiros,
+                        marcador por rondas, goles y fallos.
+                    </p>
+
+                    <button class="btn small" type="button">Abrir modo</button>
+                </article>
+            </div>
+        </section>
+
+        <!-- BRACKET -->
+        <section id="bracket" class="bracket-section">
+            <div class="section-heading bracket-heading">
+                <div>
+                    <p class="eyebrow">Eliminación directa</p>
+
+                    <h2>Bracket Mundial 2026</h2>
+
+                    <p>
+                        El bracket se actualiza desde el archivo de datos. Cuando conectemos
+                        la API, los marcadores se actualizarán automáticamente.
+                    </p>
+                </div>
+
+                <div class="refresh-box">
+                    <button id="refreshBtn" class="btn secondary small" type="button">
+                        Actualizar ahora
+                    </button>
+
+                    <span id="lastUpdate">Última actualización: --</span>
+                </div>
+            </div>
+
+            <div class="status-strip">
+                <span><i class="dot live"></i> En vivo</span>
+                <span><i class="dot finished"></i> Finalizado</span>
+                <span><i class="dot scheduled"></i> Por jugar</span>
+            </div>
+
+            <div class="bracket-map">
+                <aside id="groupsLeft" class="groups-stack"></aside>
+
+                <div id="bracketLeft" class="side-rounds left-rounds"></div>
+
+                <section class="center-stage">
+                    <div class="final-block">
+                        <h2>FINAL</h2>
+                        <div id="finalMatch" class="central-match"></div>
+                    </div>
+
+                    <div class="center-logo-wrap">
+                        <div class="center-logo-glow"></div>
+
+                        <img class="center-logo-img" src="assets/logo.png" alt="Logo Mundial 2026"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+
+                        <div class="center-logo-fallback">🏆</div>
+                    </div>
+
+                    <div class="third-block">
+                        <h3>TERCER LUGAR</h3>
+                        <div id="thirdPlaceMatch" class="central-match small-central"></div>
+                    </div>
+                </section>
+
+                <div id="bracketRight" class="side-rounds right-rounds"></div>
+
+                <aside id="groupsRight" class="groups-stack"></aside>
+            </div>
+        </section>
+
+        <!-- PARTIDO COMPLETO NUEVO CON CANVAS -->
+        <section id="fullMatchGame" class="full-match-section">
+            <div class="section-heading">
+                <p class="eyebrow">Modo de juego</p>
+
+                <h2>Partido completo</h2>
+
+                <p>
+                    Elige dos países y mira una simulación animada con cancha realista,
+                    jugadores ordenados, uniformes por país, balón, porteros, goles y ganador final.
+                </p>
+            </div>
+
+            <div class="full-match-card">
+                <div class="game-selectors">
+                    <label>
+                        Equipo local
+                        <select id="fullHomeTeam"></select>
+                    </label>
+
+                    <label>
+                        Equipo visitante
+                        <select id="fullAwayTeam"></select>
+                    </label>
+
+                    <button id="startFullMatch" class="btn" type="button">
+                        Iniciar partido
+                    </button>
+
+                    <button id="resetFullMatch" class="btn secondary" type="button">
+                        Reiniciar
+                    </button>
+                </div>
+
+                <div class="full-scoreboard">
+                    <div class="team-board home-board">
+                        <span id="fullHomeName">Local</span>
+                        <strong id="fullHomeScore">0</strong>
+                    </div>
+
+                    <div class="match-clock">
+                        <span id="fullMatchMinute">00'</span>
+                        <p id="fullMatchMessage">Selecciona dos equipos para jugar.</p>
+                    </div>
+
+                    <div class="team-board away-board">
+                        <span id="fullAwayName">Visitante</span>
+                        <strong id="fullAwayScore">0</strong>
+                    </div>
+                </div>
+
+                <div class="canvas-game-wrap">
+                    <canvas id="fullMatchCanvas" class="full-match-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- PENALES NUEVO CON CANVAS -->
+        <section id="penalesGame" class="penalty-section">
+            <div class="section-heading">
+                <p class="eyebrow">Modo de juego</p>
+
+                <h2>Tanda de penales</h2>
+
+                <p>
+                    Elige dos países para enfrentarse. Tú tiras los penales de tu equipo
+                    y el rival responde automáticamente.
+                </p>
+            </div>
+
+            <div class="penalty-game-card">
+                <div class="game-selectors">
+                    <label>
+                        Tu equipo
+                        <select id="penaltyHomeTeam"></select>
+                    </label>
+
+                    <label>
+                        Rival
+                        <select id="penaltyAwayTeam"></select>
+                    </label>
+
+                    <button id="startPenaltyGame" class="btn" type="button">
+                        Iniciar tanda
+                    </button>
+
+                    <button id="resetPenaltyGame" class="btn secondary" type="button">
+                        Reiniciar
+                    </button>
+                </div>
+
+                <div class="penalty-versus-board">
+                    <div class="penalty-team-line">
+                        <strong id="penaltyHomeName">Tu equipo</strong>
+                        <div class="penalty-rounds" id="homePenaltyRounds"></div>
+                        <span id="penaltyHomeScore">0</span>
+                    </div>
+
+                    <div class="penalty-team-line">
+                        <strong id="penaltyAwayName">Rival</strong>
+                        <div class="penalty-rounds" id="awayPenaltyRounds"></div>
+                        <span id="penaltyAwayScore">0</span>
+                    </div>
+                </div>
+
+                <div class="canvas-game-wrap penalty-canvas-wrap">
+                    <canvas id="penaltyCanvas" class="penalty-canvas"></canvas>
+                </div>
+
+                <div id="penaltyMessage" class="penalty-message">
+                    Elige dos países e inicia la tanda.
+                </div>
+
+                <div class="penalty-controls">
+                    <button class="btn penalty-btn" type="button" data-shot="left">
+                        Tirar izquierda
+                    </button>
+
+                    <button class="btn penalty-btn" type="button" data-shot="center">
+                        Tirar centro
+                    </button>
+
+                    <button class="btn penalty-btn" type="button" data-shot="right">
+                        Tirar derecha
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL -->
+    <dialog id="modeDialog" class="mode-dialog">
+        <button id="closeDialog" class="close-dialog" type="button">×</button>
+
+        <h3 id="dialogTitle"></h3>
+        <p id="dialogText"></p>
+    </dialog>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
