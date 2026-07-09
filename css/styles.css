@@ -1556,3 +1556,186 @@ input {
     padding-right: 10px;
   }
 }
+
+/* =========================================================
+   ARREGLO DEL BRACKET
+   Mantiene escritorio ordenado y celular con scroll
+   ========================================================= */
+
+/* contenedor general del bracket */
+.bracket-scroll,
+.bracket-area,
+.bracket-stage,
+.bracket-wrapper,
+.bracket-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* tablero interno del bracket */
+.bracket-board,
+.bracket-layout {
+  width: max-content;
+  min-width: 1620px; /* evita que se comprima en computadora */
+  margin: 0 auto;
+  transform: none !important;
+}
+
+/* evita que columnas y cuadros se encojan */
+.round-column,
+.bracket-column,
+.group-column,
+.groups-left,
+.groups-right,
+.left-side,
+.right-side,
+.bracket-side,
+.bracket-center {
+  flex-shrink: 0;
+}
+
+/* cuadros de grupos */
+.group-card {
+  width: 118px;
+  min-width: 118px;
+  max-width: 118px;
+  flex-shrink: 0;
+}
+
+/* cuadros de partidos */
+.match-card {
+  width: 126px;
+  min-width: 126px;
+  max-width: 126px;
+  flex-shrink: 0;
+}
+
+/* separación visual entre columnas del bracket */
+.bracket-layout,
+.bracket-board {
+  column-gap: 16px;
+  row-gap: 14px;
+}
+
+/* evita que los textos empujen los cuadros */
+.group-team,
+.team-row,
+.match-team {
+  min-width: 0;
+}
+
+.group-team-code,
+.team-code,
+.team-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* imágenes/banderas dentro del bracket */
+.group-card img,
+.match-card img,
+.flag-img {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   ESCRITORIO
+   ========================================================= */
+@media (min-width: 769px) {
+  .bracket-scroll,
+  .bracket-area,
+  .bracket-stage,
+  .bracket-wrapper,
+  .bracket-container {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .bracket-board,
+  .bracket-layout {
+    min-width: 1620px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .group-card {
+    width: 118px;
+    min-width: 118px;
+    max-width: 118px;
+  }
+
+  .match-card {
+    width: 126px;
+    min-width: 126px;
+    max-width: 126px;
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+@media (max-width: 1024px) {
+  .bracket-board,
+  .bracket-layout {
+    min-width: 1500px;
+  }
+}
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+@media (max-width: 768px) {
+  .bracket-scroll,
+  .bracket-area,
+  .bracket-stage,
+  .bracket-wrapper,
+  .bracket-container {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .bracket-board,
+  .bracket-layout {
+    min-width: 1480px; /* se mantiene ordenado y se desliza */
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .group-card {
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+  }
+
+  .match-card {
+    width: 122px;
+    min-width: 122px;
+    max-width: 122px;
+  }
+}
+
+/* =========================================================
+   CELULAR PEQUEÑO
+   ========================================================= */
+@media (max-width: 480px) {
+  .bracket-board,
+  .bracket-layout {
+    min-width: 1440px;
+  }
+
+  .group-card {
+    width: 106px;
+    min-width: 106px;
+    max-width: 106px;
+  }
+
+  .match-card {
+    width: 118px;
+    min-width: 118px;
+    max-width: 118px;
+  }
+}
