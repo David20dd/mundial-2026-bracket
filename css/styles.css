@@ -1355,3 +1355,317 @@ footer,
     height: 300px;
   }
 }
+
+/* =========================================================
+   FIX URGENTE - RESTAURAR BRACKET HORIZONTAL
+   Pegar al FINAL de styles.css
+   ========================================================= */
+
+/* Evita que la página se rompa horizontalmente */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* El área del bracket debe permitir scroll horizontal */
+.bracket-section {
+  width: 100%;
+  overflow-x: hidden !important;
+}
+
+.bracket-scroll,
+.bracket-area,
+.bracket-stage,
+.bracket-wrapper,
+.bracket-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 
+   Este selector encuentra automáticamente el contenedor real
+   que tiene adentro groupsLeft, bracketLeft, bracketRight y groupsRight.
+   Sirve aunque el HTML use otro nombre de clase.
+*/
+body *:has(> #groupsLeft):has(> #bracketLeft):has(> #bracketRight):has(> #groupsRight) {
+  width: 1760px !important;
+  min-width: 1760px !important;
+  max-width: none !important;
+  min-height: 860px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 38px 30px !important;
+
+  display: grid !important;
+  grid-template-columns: 125px 555px 300px 555px 125px !important;
+  column-gap: 28px !important;
+  align-items: stretch !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255,255,255,0.13), transparent 27%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 40%),
+    rgba(4, 4, 7, 0.76) !important;
+}
+
+/* Cada bloque vuelve a su columna correcta */
+#groupsLeft {
+  grid-column: 1 !important;
+}
+
+#bracketLeft {
+  grid-column: 2 !important;
+}
+
+.bracket-center,
+.center-bracket,
+.final-column,
+.center-column {
+  grid-column: 3 !important;
+}
+
+#bracketRight {
+  grid-column: 4 !important;
+}
+
+#groupsRight {
+  grid-column: 5 !important;
+}
+
+/* Grupos laterales */
+#groupsLeft,
+#groupsRight {
+  width: 125px !important;
+  min-width: 125px !important;
+  max-width: 125px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  align-self: stretch !important;
+}
+
+/* Brackets izquierdo y derecho */
+#bracketLeft,
+#bracketRight {
+  width: 555px !important;
+  min-width: 555px !important;
+  max-width: 555px !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(4, 126px) !important;
+  column-gap: 16px !important;
+  align-self: stretch !important;
+}
+
+/* Columnas de rondas */
+.round-column {
+  width: 126px !important;
+  min-width: 126px !important;
+  max-width: 126px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.round-title {
+  width: 100% !important;
+  margin: 0 0 18px !important;
+  text-align: center !important;
+  font-size: 0.72rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+/* Espaciado vertical de cada ronda */
+.round-column[data-round="r32"] {
+  padding-top: 0 !important;
+  gap: 18px !important;
+}
+
+.round-column[data-round="r16"] {
+  padding-top: 92px !important;
+  gap: 88px !important;
+}
+
+.round-column[data-round="qf"] {
+  padding-top: 232px !important;
+  gap: 250px !important;
+}
+
+.round-column[data-round="sf"] {
+  padding-top: 390px !important;
+  gap: 0 !important;
+}
+
+/* Centro del bracket */
+.bracket-center,
+.center-bracket,
+.final-column,
+.center-column {
+  width: 300px !important;
+  min-width: 300px !important;
+  max-width: 300px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 24px !important;
+  text-align: center !important;
+}
+
+.bracket-center h2,
+.center-bracket h2,
+.final-column h2,
+.center-column h2,
+.final-title {
+  margin: 0 !important;
+  font-size: 3rem !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  text-transform: uppercase !important;
+}
+
+.final-logo,
+.bracket-logo {
+  width: 135px !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* Tarjetas de partidos */
+.match-card {
+  width: 126px !important;
+  min-width: 126px !important;
+  max-width: 126px !important;
+  min-height: 74px !important;
+  padding: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Tarjetas de grupos */
+.group-card {
+  width: 112px !important;
+  min-width: 112px !important;
+  max-width: 112px !important;
+  padding: 9px 7px 10px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Mejora interna de países en grupos */
+.group-teams {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 6px !important;
+}
+
+.group-team {
+  height: 28px !important;
+  min-width: 0 !important;
+  padding: 3px 4px !important;
+
+  display: grid !important;
+  grid-template-columns: 20px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 4px !important;
+
+  border-radius: 7px !important;
+  background: rgba(255, 255, 255, 0.11) !important;
+  overflow: hidden !important;
+}
+
+.group-team-code {
+  min-width: 0 !important;
+  color: #ffffff !important;
+  font-size: 0.58rem !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+}
+
+.group-card h3 {
+  margin: 10px 0 0 !important;
+  font-size: 0.94rem !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+}
+
+/* Banderas */
+.flag-img {
+  object-fit: cover !important;
+  flex-shrink: 0 !important;
+}
+
+.group-team .flag-img,
+.group-card .flag-img {
+  width: 20px !important;
+  height: 14px !important;
+  display: block !important;
+  border-radius: 2px !important;
+}
+
+.team-row .flag-img {
+  width: 24px !important;
+  height: 17px !important;
+}
+
+/* Filas de equipos en partidos */
+.team-row {
+  height: 23px !important;
+  display: grid !important;
+  grid-template-columns: 26px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+}
+
+.team-code {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* =========================================================
+   TABLET / CELULAR
+   Mantiene el bracket completo y deslizable
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  body *:has(> #groupsLeft):has(> #bracketLeft):has(> #bracketRight):has(> #groupsRight) {
+    width: 1700px !important;
+    min-width: 1700px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body *:has(> #groupsLeft):has(> #bracketLeft):has(> #bracketRight):has(> #groupsRight) {
+    width: 1660px !important;
+    min-width: 1660px !important;
+    padding: 32px 24px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body *:has(> #groupsLeft):has(> #bracketLeft):has(> #bracketRight):has(> #groupsRight) {
+    width: 1620px !important;
+    min-width: 1620px !important;
+    padding: 28px 20px !important;
+  }
+}
