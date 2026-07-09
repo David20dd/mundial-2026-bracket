@@ -1073,3 +1073,486 @@ body::before {
   border-radius: 3px;
   background: rgba(255,255,255,0.10);
 }
+
+/* =========================================================
+   RESPONSIVE GENERAL - COMPUTADORA Y CELULAR
+   Pegar al final de styles.css
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Evita que imágenes, canvas o elementos grandes rompan la página */
+img,
+canvas,
+video {
+  max-width: 100%;
+}
+
+/* =========================================================
+   HEADER / NAVEGACIÓN
+   ========================================================= */
+
+.site-header,
+.header,
+.navbar,
+nav {
+  max-width: 100%;
+}
+
+.nav-links,
+.menu,
+.nav-menu {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* =========================================================
+   SECCIONES PRINCIPALES
+   ========================================================= */
+
+section,
+.container,
+.wrapper,
+.main-content,
+.hero,
+.bracket-section,
+.full-match-section,
+.penalty-section,
+.modes-section {
+  max-width: 100%;
+}
+
+/* =========================================================
+   HERO / PORTADA
+   ========================================================= */
+
+.hero {
+  overflow: hidden;
+}
+
+.hero-content,
+.hero-text {
+  max-width: 100%;
+}
+
+.hero h1,
+.hero-title {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.hero img,
+.hero-logo,
+.logo,
+.ball-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================================================
+   TARJETAS DE MODALIDADES
+   ========================================================= */
+
+.mode-grid,
+.modes-grid,
+.cards-grid {
+  width: 100%;
+}
+
+.mode-card {
+  min-width: 0;
+}
+
+/* =========================================================
+   BRACKET RESPONSIVE
+   Mantiene el bracket sin dañarlo:
+   en celular permite desplazamiento horizontal.
+   ========================================================= */
+
+.bracket-wrapper,
+.bracket-board,
+.bracket-layout,
+.bracket-container {
+  max-width: 100%;
+}
+
+/* Si el bracket es muy ancho, se podrá mover horizontalmente en celular */
+.bracket-scroll,
+.bracket-area,
+.bracket-stage {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Protege columnas y partidos para que no se aplasten demasiado */
+.round-column,
+.group-card,
+.match-card {
+  flex-shrink: 0;
+}
+
+.match-card {
+  min-width: 145px;
+}
+
+.team-row,
+.group-team {
+  min-width: 0;
+}
+
+.team-code,
+.group-team-code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   CANVAS DE JUEGOS
+   Partido completo y penales
+   ========================================================= */
+
+.canvas-game-wrap,
+.penalty-canvas-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.full-match-canvas,
+.penalty-canvas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   FORMULARIOS / SELECTORES / BOTONES
+   ========================================================= */
+
+select,
+button,
+input {
+  max-width: 100%;
+}
+
+.game-controls,
+.match-controls,
+.penalty-controls,
+.full-match-controls,
+.game-selectors,
+.team-selectors {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.game-controls select,
+.match-controls select,
+.penalty-controls select,
+.full-match-controls select,
+.game-selectors select,
+.team-selectors select {
+  min-width: 160px;
+}
+
+.game-controls button,
+.match-controls button,
+.penalty-controls button,
+.full-match-controls button,
+.penalty-btn {
+  white-space: nowrap;
+}
+
+/* =========================================================
+   MARCADORES
+   ========================================================= */
+
+.scoreboard,
+.match-scoreboard,
+.penalty-scoreboard,
+.full-scoreboard {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.score-team,
+.score-box,
+.team-score {
+  min-width: 0;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .hero {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .mode-grid,
+  .modes-grid,
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .full-match-canvas {
+    height: 420px;
+  }
+
+  .penalty-canvas {
+    height: 380px;
+  }
+}
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .site-header,
+  .header,
+  .navbar {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .nav-links,
+  .menu,
+  .nav-menu {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 28px 14px;
+    text-align: center;
+  }
+
+  .hero h1,
+  .hero-title {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+    line-height: 1.05;
+  }
+
+  .hero p,
+  .hero-subtitle {
+    font-size: 0.98rem;
+  }
+
+  .mode-grid,
+  .modes-grid,
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mode-card {
+    width: 100%;
+  }
+
+  .bracket-section {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .bracket-scroll,
+  .bracket-area,
+  .bracket-stage,
+  .bracket-board,
+  .bracket-layout {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bracket-board,
+  .bracket-layout {
+    min-width: 980px;
+  }
+
+  .group-card {
+    min-width: 92px;
+  }
+
+  .match-card {
+    min-width: 150px;
+  }
+
+  .team-row {
+    gap: 5px;
+  }
+
+  .team-code {
+    font-size: 0.78rem;
+  }
+
+  .score {
+    font-size: 0.85rem;
+  }
+
+  .full-match-section,
+  .penalty-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .game-controls,
+  .match-controls,
+  .penalty-controls,
+  .full-match-controls,
+  .game-selectors,
+  .team-selectors {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .game-controls select,
+  .match-controls select,
+  .penalty-controls select,
+  .full-match-controls select,
+  .game-selectors select,
+  .team-selectors select,
+  .game-controls button,
+  .match-controls button,
+  .penalty-controls button,
+  .full-match-controls button {
+    width: 100%;
+  }
+
+  .scoreboard,
+  .match-scoreboard,
+  .penalty-scoreboard,
+  .full-scoreboard {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .canvas-game-wrap {
+    border-radius: 18px;
+  }
+
+  .full-match-canvas {
+    height: 340px;
+  }
+
+  .penalty-canvas {
+    height: 330px;
+  }
+
+  .penalty-actions,
+  .penalty-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .penalty-btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   CELULAR PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .hero h1,
+  .hero-title {
+    font-size: clamp(1.8rem, 12vw, 2.6rem);
+  }
+
+  .section-title,
+  .bracket-title,
+  .game-title {
+    font-size: 1.45rem;
+    text-align: center;
+  }
+
+  .bracket-board,
+  .bracket-layout {
+    min-width: 920px;
+  }
+
+  .group-card {
+    min-width: 86px;
+  }
+
+  .match-card {
+    min-width: 142px;
+    padding: 8px;
+  }
+
+  .flag-img {
+    width: 23px;
+    height: 17px;
+  }
+
+  .group-team .flag-img {
+    width: 23px;
+    height: 17px;
+  }
+
+  .team-row .flag-img {
+    width: 22px;
+    height: 16px;
+  }
+
+  .flag-emoji {
+    width: 23px;
+    height: 17px;
+    font-size: 15px;
+  }
+
+  .team-code,
+  .group-team-code {
+    font-size: 0.72rem;
+  }
+
+  .full-match-canvas {
+    height: 300px;
+  }
+
+  .penalty-canvas {
+    height: 300px;
+  }
+
+  .full-match-section,
+  .penalty-section,
+  .modes-section,
+  .bracket-section {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
