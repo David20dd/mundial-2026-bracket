@@ -1739,3 +1739,47 @@ input {
     max-width: 118px;
   }
 }
+
+/* =========================================================
+   SOLO MEJORA DE BANDERAS Y TEXTO EN GRUPOS
+   No mueve el bracket
+   ========================================================= */
+
+.group-card {
+  overflow: hidden;
+}
+
+.group-teams {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.group-team {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.group-team .flag-img {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.group-team-code {
+  min-width: 0;
+  font-size: 0.62rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
