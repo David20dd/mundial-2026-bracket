@@ -64,28 +64,28 @@ const flagCodeMap = {
 };
 
 const fallbackTeams = [
-  { code: "MEX", name: "México", flag: "🇲🇽", short: "MX" },
-  { code: "RSA", name: "Sudáfrica", flag: "🇿🇦", short: "ZA" },
-  { code: "BRA", name: "Brasil", flag: "🇧🇷", short: "BR" },
-  { code: "ARG", name: "Argentina", flag: "🇦🇷", short: "AR" },
-  { code: "ENG", name: "Inglaterra", flag: "🏴", short: "EN" },
-  { code: "FRA", name: "Francia", flag: "🇫🇷", short: "FR" },
-  { code: "ESP", name: "España", flag: "🇪🇸", short: "ES" },
-  { code: "GER", name: "Alemania", flag: "🇩🇪", short: "DE" },
-  { code: "BEL", name: "Bélgica", flag: "🇧🇪", short: "BE" },
-  { code: "POR", name: "Portugal", flag: "🇵🇹", short: "PT" },
-  { code: "USA", name: "Estados Unidos", flag: "🇺🇸", short: "US" },
-  { code: "CRO", name: "Croacia", flag: "🇭🇷", short: "HR" },
-  { code: "SUI", name: "Suiza", flag: "🇨🇭", short: "CH" },
-  { code: "COL", name: "Colombia", flag: "🇨🇴", short: "CO" },
-  { code: "MAR", name: "Marruecos", flag: "🇲🇦", short: "MA" },
-  { code: "JPN", name: "Japón", flag: "🇯🇵", short: "JP" },
-  { code: "CAN", name: "Canadá", flag: "🇨🇦", short: "CA" },
-  { code: "NED", name: "Países Bajos", flag: "🇳🇱", short: "NL" },
-  { code: "NOR", name: "Noruega", flag: "🇳🇴", short: "NO" },
-  { code: "EGY", name: "Egipto", flag: "🇪🇬", short: "EG" },
-  { code: "SEN", name: "Senegal", flag: "🇸🇳", short: "SN" },
-  { code: "GHA", name: "Ghana", flag: "🇬🇭", short: "GH" }
+  { code: "MEX", name: "México", flag: "🇲🇽" },
+  { code: "RSA", name: "Sudáfrica", flag: "🇿🇦" },
+  { code: "BRA", name: "Brasil", flag: "🇧🇷" },
+  { code: "ARG", name: "Argentina", flag: "🇦🇷" },
+  { code: "ENG", name: "Inglaterra", flag: "🏴" },
+  { code: "FRA", name: "Francia", flag: "🇫🇷" },
+  { code: "ESP", name: "España", flag: "🇪🇸" },
+  { code: "GER", name: "Alemania", flag: "🇩🇪" },
+  { code: "BEL", name: "Bélgica", flag: "🇧🇪" },
+  { code: "POR", name: "Portugal", flag: "🇵🇹" },
+  { code: "USA", name: "Estados Unidos", flag: "🇺🇸" },
+  { code: "CRO", name: "Croacia", flag: "🇭🇷" },
+  { code: "SUI", name: "Suiza", flag: "🇨🇭" },
+  { code: "COL", name: "Colombia", flag: "🇨🇴" },
+  { code: "MAR", name: "Marruecos", flag: "🇲🇦" },
+  { code: "JPN", name: "Japón", flag: "🇯🇵" },
+  { code: "CAN", name: "Canadá", flag: "🇨🇦" },
+  { code: "NED", name: "Países Bajos", flag: "🇳🇱" },
+  { code: "NOR", name: "Noruega", flag: "🇳🇴" },
+  { code: "EGY", name: "Egipto", flag: "🇪🇬" },
+  { code: "SEN", name: "Senegal", flag: "🇸🇳" },
+  { code: "GHA", name: "Ghana", flag: "🇬🇭" }
 ];
 
 const teamKits = {
@@ -296,8 +296,7 @@ function getSelectableTeams() {
           teams.push({
             code: team.code,
             name: team.name,
-            flag: team.flag || "⚽",
-            short: team.short || team.code
+            flag: team.flag || "⚽"
           });
         }
       });
@@ -426,7 +425,7 @@ function groupTemplate(group) {
         ${group.teams.map(team => `
           <div class="group-team" title="${team.name}">
             ${flagTemplate(team)}
-            <span class="group-team-code">${team.code}</span>
+            <span class="group-team-code">${team.code || "TBD"}</span>
           </div>
         `).join("")}
       </div>
@@ -595,7 +594,7 @@ function renderLastUpdate() {
 }
 
 /* =========================================================
-   DIBUJO GENERAL CANVAS
+   CANVAS GENERAL
    ========================================================= */
 
 function drawField(ctx, width, height) {
@@ -854,7 +853,7 @@ function shadeColor(color, percent) {
 }
 
 /* =========================================================
-   PARTIDO COMPLETO CON CÍRCULOS Y BANDERAS
+   PARTIDO COMPLETO
    ========================================================= */
 
 const fullMatchGame = {
@@ -1045,8 +1044,7 @@ function createCirclePlayers() {
       side: "home",
       code: homeCode,
       baseX: item.x * width,
-      baseY: item.y * height,
-      color: "#2ee66f"
+      baseY: item.y * height
     }));
   });
 
@@ -1057,8 +1055,7 @@ function createCirclePlayers() {
       side: "away",
       code: awayCode,
       baseX: item.x * width,
-      baseY: item.y * height,
-      color: "#ff4164"
+      baseY: item.y * height
     }));
   });
 
@@ -1079,7 +1076,6 @@ function makeCirclePlayer(config) {
     vx: 0,
     vy: 0,
     r: config.role === "GK" ? 25 : 23,
-    color: config.color,
     pulse: Math.random() * Math.PI * 2,
     touchCooldown: 0
   };
@@ -1097,11 +1093,9 @@ function resetBallToCenter() {
 
   fullMatchGame.ball.x = width / 2;
   fullMatchGame.ball.y = height / 2;
-
   fullMatchGame.ball.vx = fullMatchGame.possession === "home" ? 0.85 : -0.85;
   fullMatchGame.ball.vy = randomBetween(-0.25, 0.25);
   fullMatchGame.ball.rotation = 0;
-
   fullMatchGame.touchLock = 0;
 }
 
@@ -1194,7 +1188,6 @@ function updatePlayerMovement(width, height, delta) {
 
     if (isKeeper) {
       const ownGoalX = player.side === "home" ? width * 0.055 : width * 0.945;
-
       targetX = ownGoalX;
       targetY = clamp(ball.y, height * 0.38, height * 0.62);
     } else if (attacking) {
@@ -1297,10 +1290,6 @@ function updateBallMovement(width, height) {
     ball.vx *= -0.58;
     fullMatchGame.possession = "away";
   }
-
-  if (Math.random() < 0.0016) {
-    ball.vy += randomBetween(-0.32, 0.32);
-  }
 }
 
 function detectPlayerBallTouches(width, height) {
@@ -1343,7 +1332,6 @@ function detectPlayerBallTouches(width, height) {
 
   if (player.role === "GK") {
     const passTarget = chooseSafePassTarget(player, teamPlayers, width, height);
-
     targetX = passTarget.x;
     targetY = passTarget.y;
     power = randomBetween(2.4, 3.3);
@@ -1353,7 +1341,6 @@ function detectPlayerBallTouches(width, height) {
     power = player.role === "FWD" ? randomBetween(3.8, 4.8) : randomBetween(3.3, 4.2);
   } else {
     const passTarget = chooseDistributedPassTarget(player, teamPlayers, width, height);
-
     targetX = passTarget.x;
     targetY = passTarget.y;
     power = randomBetween(2.2, 3.45);
@@ -1432,16 +1419,8 @@ function chooseDistributedPassTarget(player, teamPlayers, width, height) {
   }
 
   return {
-    x: clamp(
-      selected.x + attackDirection * randomBetween(35, 85),
-      44,
-      width - 44
-    ),
-    y: clamp(
-      selected.y + randomBetween(-58, 58),
-      44,
-      height - 44
-    )
+    x: clamp(selected.x + attackDirection * randomBetween(35, 85), 44, width - 44),
+    y: clamp(selected.y + randomBetween(-58, 58), 44, height - 44)
   };
 }
 
@@ -1559,15 +1538,7 @@ function finishFullMatchGame() {
 }
 
 function drawFullMatchRadar(ctx, width, height) {
-  const gradient = ctx.createRadialGradient(
-    width / 2,
-    height / 2,
-    20,
-    width / 2,
-    height / 2,
-    width * 0.55
-  );
-
+  const gradient = ctx.createRadialGradient(width / 2, height / 2, 20, width / 2, height / 2, width * 0.55);
   gradient.addColorStop(0, "rgba(255,255,255,0.10)");
   gradient.addColorStop(1, "rgba(0,0,0,0)");
 
